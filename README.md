@@ -25,10 +25,10 @@
 - qiniu-sdk
 
 ### 项目结构
-- 详情查看博客 [关于网站—项目介绍](http://blog.kyeteo.cn/article/26)
+- 详情查看博客 [关于网站—项目介绍](http://blog.kyeteo.cn/article/36)
 
 ### 项目运行
-- 详情查看博客 [关于网站—项目介绍](http://blog.kyeteo.cn/article/26)
+- 详情查看博客 [关于网站—项目介绍](http://blog.kyeteo.cn/article/36)
 
 ### 版权信息
 
