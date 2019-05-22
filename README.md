@@ -1,39 +1,35 @@
-# opensource-blog-web
+# kyeteo开源博客
 
-#### 介绍
-{**以下是码云平台说明，您可以替换此简介**
-码云是 OSCHINA 推出的基于 Git 的代码托管平台（同时支持 SVN）。专为开发者提供稳定、高效、安全的云端软件开发协作平台
-无论是个人、团队、或是企业，都能够用码云实现代码托管、项目管理、协作开发。企业项目请看 [https://gitee.com/enterprises](https://gitee.com/enterprises)}
+## 项目说明
+- kyeteo开源博客是基于vuejs(vue cli3创建) + thinkphp5前后端分离的完整项目
+- 该项目为前端部分
+- 在线地址 [keyteo博客](http://blog.keyteo.cn)
+- 后端地址 [码云地址](https://gitee.com/is-kyeteo/opensource-blog-server)
+- 数据库地址 [码云](https://gitee.com/is-kyeteo/opensource-blog-database)
 
-#### 软件架构
-软件架构说明
+### 项目特点
+- 前端采用主流的vuejs + iview组合，更容易上手开发
+- 后端采用主流的thinkphp5框架，适合快速开发
+- 项目支持博客所有者发布文章等一系列完整过程
+- 项目支持用户查看，评论，分享等完整博客阅读体验
 
+### 技术选型
+- vuejs
+- iview
+- mavon-editor
+- vuex
+- vue-router
+- axios
+- thinkphp5
+- php-jwt
+- qiniu-sdk
 
-#### 安装教程
+### 项目结构
+- 详情查看博客 [关于网站—项目介绍](http://blog.kyeteo.cn/article/26)
 
-1. xxxx
-2. xxxx
-3. xxxx
+### 项目运行
+- 详情查看博客 [关于网站—项目介绍](http://blog.kyeteo.cn/article/26)
 
-#### 使用说明
+### 版权信息
 
-1. xxxx
-2. xxxx
-3. xxxx
-
-#### 参与贡献
-
-1. Fork 本仓库
-2. 新建 Feat_xxx 分支
-3. 提交代码
-4. 新建 Pull Request
-
-
-#### 码云特技
-
-1. 使用 Readme\_XXX.md 来支持不同的语言，例如 Readme\_en.md, Readme\_zh.md
-2. 码云官方博客 [blog.gitee.com](https://blog.gitee.com)
-3. 你可以 [https://gitee.com/explore](https://gitee.com/explore) 这个地址来了解码云上的优秀开源项目
-4. [GVP](https://gitee.com/gvp) 全称是码云最有价值开源项目，是码云综合评定出的优秀开源项目
-5. 码云官方提供的使用手册 [https://gitee.com/help](https://gitee.com/help)
-6. 码云封面人物是一档用来展示码云会员风采的栏目 [https://gitee.com/gitee-stars/](https://gitee.com/gitee-stars/)
+kyeteo开源项目遵循Apache2开源协议发布，并提供免费使用。

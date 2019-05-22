@@ -1,0 +1,136 @@
+@import '~mavon-editor/dist/css/index.css';
+.my-article{
+  .a-container{
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    background: white;
+    .c-editor{
+      flex:1;
+      overflow-y: auto;
+      overflow-x: hidden;
+      .e-wrap{
+        padding:20px 40px;
+        .w-title{
+          display: flex;
+          align-items: center;
+          height: 58px;
+          input{
+            width:100%;
+            border:none;
+            outline: none;
+            font-size: 20px;
+            color:#595959;
+          }
+        }
+        .w-mavon{
+          .v-note-wrapper{
+            width:100%;
+            min-height: 600px;
+            z-index: 999;
+            .v-note-op{
+              border-left:none;
+              border-right:none;
+              border-bottom: 1px solid #e0e0e0;
+            }
+            .v-note-panel{
+              border:none;
+            }
+          }
+        }
+        .w-form{
+          padding: 35px 0 100px 0;
+          .f-item{
+            display: flex;
+            align-items: center;
+            .i-left{
+              display: flex;
+              justify-content: flex-end;
+              flex-basis: 120px;
+              span{
+                font-size: 16px;
+                color: #999;
+              }
+            }
+            .i-right{
+              flex:1;
+              padding-left: 40px;
+            }
+            &:not(:last-child){
+              padding-bottom: 40px;
+            }
+          }
+        }
+      }
+    }
+    .c-btn{
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-basis: 81px;
+      box-sizing: border-box;
+      padding:0 40px;
+      border-top: 1px solid rgb(232, 232, 232);
+      .b-left{
+        display: flex;
+        align-items: center;
+        .l-count{
+          span{
+            font-size: 14px;
+            color: rgb(158, 158, 158);
+          }
+        }
+      }
+      .b-right{
+        .r-publish{
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          width:100px;
+          height: 40px;
+          border-radius: 4px;
+          background: #f85959;
+          span{
+            color:white;
+          }
+          &:hover{
+            cursor: pointer;
+          }
+        }
+      }
+    }
+  }
+}
+.d-header{
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  .h-left{
+    font-size: 14px;
+    font-weight: 700;
+    color: #17233d;
+  }
+}
+.d-content{
+  .c-block{
+    .b-item{
+      display: flex;
+      align-items: center;
+      .i-left{
+        flex-basis: 50px;
+        span{
+          font-size: 14px;
+        }
+      }
+      .i-right{
+        flex:1;
+      }
+      &:last-child{
+        padding-top: 10px;
+      }
+    }
+    &:not(:first-child){
+      padding-top: 20px;
+    }
+  }
+}
