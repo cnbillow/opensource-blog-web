@@ -1,6 +1,7 @@
 import axios from 'axios'
 import {token} from '@/utils/token'
 import {BASE_API_URL} from '@/config/var/api'
+import {RESP_INTERCEPTOR} from './response-interceptor'
 
 axios.defaults.baseURL = BASE_API_URL
 axios.interceptors.request.use(config => {
@@ -15,6 +16,7 @@ axios.interceptors.request.use(config => {
 
 axios.interceptors.response.use(response => {
     // Do something with response data
+    RESP_INTERCEPTOR(response)
     return response
 }, error => {
     // Do something with response error

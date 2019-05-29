@@ -11,15 +11,15 @@
                     <div class="h-time">
                         <div class="t-item">
                             <i class="iconfont icon-time"></i>
-                            <span>2018-12-12 14:20</span>
+                            <span>{{info.article.create_time | timeFormat}}</span>
                         </div>
                         <div class="t-item">
                             <i class="iconfont icon-liulan"></i>
-                            <span>4,200</span>
+                            <span>{{info.article.view_count}}</span>
                         </div>
                         <div class="t-item">
                             <i class="iconfont icon-pinglun"></i>
-                            <span>1</span>
+                            <span>{{info.article.comment_count}}</span>
                         </div>
                     </div>
                 </div>
@@ -166,6 +166,28 @@
                             </div>
                             <div class="i-text">
                                 <p>{{item.title}}</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="r-block">
+                    <div class="b-title">
+                        <i class="iconfont icon-xuanchuantuiguang"></i>
+                        <span>热门服务</span>
+                    </div>
+                    <div class="b-content">
+                        <div class="c-item-1"
+                             :key="key"
+                             @click="openUrl(item.url)"
+                             v-for="(item, key) in info.promotes">
+                            <div class="i-cover">
+                                <img :src="item.cover | imgCover" alt="">
+                            </div>
+                            <div class="i-name">
+                                <p>{{item.name}}</p>
+                            </div>
+                            <div class="i-desc">
+                                <p>{{item.desc}}</p>
                             </div>
                         </div>
                     </div>

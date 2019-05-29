@@ -1,7 +1,7 @@
 import {api} from '@/service/api'
 import {token} from '@/utils/token'
 
-const AUTH_ROUTES = ['/editor', '/articles']
+const AUTH_ROUTES = ['/my-publish', '/my-contents', '/my-comments', '/my-article']
 const LOGIN_INACCESSIBLE_ROUTES = ['/login', '/register']
 
 export const interceptor = router => {

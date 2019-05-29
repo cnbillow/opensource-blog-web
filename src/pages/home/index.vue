@@ -45,7 +45,7 @@
                                                     <span>{{item.user ? item.user.nickname : ''}}</span>
                                                 </div>
                                                 <div class="l-time">
-                                                    <span>2018年06月15 10:00</span>
+                                                    <span>{{item.create_time | timeFormat}}</span>
                                                 </div>
                                             </div>
                                             <div class="a-right" @click="nav('/article/' + item.id)">
@@ -119,7 +119,7 @@
                                                 <p>{{item.title}}</p>
                                             </div>
                                             <div class="r-time">
-                                                <span>2018年12月 12:30</span>
+                                                <span>{{item.create_time | timeFormat}}</span>
                                             </div>
                                         </div>
                                     </div>

@@ -9,6 +9,7 @@
   },
   "dependencies": {
     "axios": "^0.18.0",
+    "dayjs": "^1.8.14",
     "iview": "^3.4.0",
     "less": "^3.9.0",
     "less-loader": "^4.1.0",
@@ -38,7 +39,12 @@
       "eslint:recommended"
     ],
     "rules": {
-      "vue/no-parsing-error": [2, { "x-invalid-end-tag": false }]
+      "vue/no-parsing-error": [
+        2,
+        {
+          "x-invalid-end-tag": false
+        }
+      ]
     },
     "parserOptions": {
       "parser": "babel-eslint"

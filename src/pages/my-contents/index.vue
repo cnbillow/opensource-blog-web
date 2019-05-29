@@ -13,9 +13,9 @@
                                 <span>{{item.title}}</span>
                             </div>
                             <div class="r-time">
-                                <span>2,452阅读</span>
-                                <span>21评论</span>
-                                <span>2018-07-15 12:12</span>
+                                <span>{{item.view_count}}阅读</span>
+                                <span>{{item.comment_count}}评论</span>
+                                <span>{{item.create_time | timeFormat}}</span>
                             </div>
                         </div>
                         <div class="i-more">

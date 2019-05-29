@@ -52,7 +52,25 @@
             ...mapActions('user', ['login']),
             toLogin () {
                 this.login(this.form).then(() => {
-                    this.$Message.success('登陆成功')
+                    this.$Notice.success({
+                        name: 'exit',
+                        title: '操作提示',
+                        render: h => {
+                            return h('div', {
+                                style: {
+                                    display: 'flex',
+                                    alignItems: 'center'
+                                }
+                            }, [
+                                h('span', {
+                                    style: {
+                                        paddingRight: '10px'
+                                    }
+                                }, '登陆成功')
+                            ])
+                        },
+                        duration: 3000
+                    });
                     this.nav('/')
                 })
             }

@@ -5,9 +5,9 @@
                 <h1 @click="rep('/')">kyeteo</h1>
             </div>
             <div class="w-right" v-if="isLogin">
-                <span class="r-text">个人中心</span>
+                <span class="r-text" @click="goCenter">个人中心</span>
                 <span>/</span>
-                <span class="r-text">注销</span>
+                <span class="r-text" @click="doExit">注销</span>
             </div>
             <div class="w-right" v-else>
                 <span class="r-text" @click="nav('/login')">登陆</span>
@@ -19,10 +19,40 @@
 </template>
 
 <script>
-    import {mapState} from 'vuex'
+    import {mapState, mapActions} from 'vuex'
     export default {
         computed: {
-            ...mapState('user', ['isLogin'])
+            ...mapState('user', ['isLogin']),
+            ...mapState('user', ['profile'])
+        },
+        methods: {
+            ...mapActions('user', ['exit']),
+            goCenter () {
+                this.nav('/author/' + this.profile.id)
+            },
+            doExit () {
+                this.exit().then(() => {
+                    this.$Notice.success({
+                        name: 'exit',
+                        title: '操作提示',
+                        render: h => {
+                            return h('div', {
+                                style: {
+                                    display: 'flex',
+                                    alignItems: 'center'
+                                }
+                            }, [
+                                h('span', {
+                                    style: {
+                                        paddingRight: '10px'
+                                    }
+                                }, '注销成功')
+                            ])
+                        },
+                        duration: 3000
+                    });
+                })
+            }
         }
     }
 </script>

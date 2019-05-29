@@ -1,19 +1,26 @@
 import Vue from 'vue'
-import {BASE_CDN_URL} from '../../config/var/api'
+import dayjs from 'dayjs'
+import {QINIU_URL} from '../../config/var/qiniu'
 
 Vue.mixin({
     filters: {
         imgCover (e) {
             if (!e) {
-                return BASE_CDN_URL + 'FpPaIUIP_uhaIkJPcDwT2lzlNXTO'
+                return QINIU_URL + 'FpPaIUIP_uhaIkJPcDwT2lzlNXTO'
             }
-            return BASE_CDN_URL + e
+            return QINIU_URL + e
         },
         avatarCover (e) {
             if (!e) {
-                return BASE_CDN_URL + 'FjOWYKEmOtCEUXJz9uIaepiPGPcX'
+                return QINIU_URL + 'FjOWYKEmOtCEUXJz9uIaepiPGPcX'
             }
-            return BASE_CDN_URL + e
+            return QINIU_URL + e
+        },
+        timeFormat (e) {
+            if (!e) {
+                return ''
+            }
+            return dayjs(e).format('YYYY-MM-DD HH:mm')
         }
     },
     methods: {
@@ -25,6 +32,9 @@ Vue.mixin({
         },
         back () {
             this.$router.go(-1)
+        },
+        openUrl (s) {
+            window.open(s)
         }
     }
 })

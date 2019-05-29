@@ -31,7 +31,27 @@
                 this.nav('/author/' + this.profile.id)
             },
             doExit () {
-                this.exit()
+                this.exit().then(() => {
+                    this.$Notice.success({
+                        name: 'exit',
+                        title: '操作提示',
+                        render: h => {
+                            return h('div', {
+                                style: {
+                                    display: 'flex',
+                                    alignItems: 'center'
+                                }
+                            }, [
+                                h('span', {
+                                    style: {
+                                        paddingRight: '10px'
+                                    }
+                                }, '注销成功')
+                            ])
+                        },
+                        duration: 3000
+                    });
+                })
             }
         }
     }

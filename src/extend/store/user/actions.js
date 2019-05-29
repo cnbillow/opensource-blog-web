@@ -24,6 +24,9 @@ export const actions = {
     },
     getUser({commit}) {
         return new Promise((resolve) => {
+            if (!token.get()) {
+                return
+            }
             api.user.profile().then(res => {
                 if (res.done) {
                     commit(types.SET_USER_PROFILE, res.data)
