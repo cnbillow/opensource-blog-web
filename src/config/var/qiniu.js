@@ -1,1 +1,0 @@
-export const QINIU_URL = 'http://cdn.neho.top/'
