@@ -1,9 +1,9 @@
 # kyeteo开源博客
 
 ## 项目说明
-- kyeteo开源博客是基于vuejs(vue cli3创建) + thinkphp5前后端分离的完整项目
-- 该项目为前端部分
-- 在线地址 [keyteo博客](http://blog.keyteo.cn)
+- kyeteo开源博客是基于vuejs(nuxt创建) + thinkphp5前后端分离的完整项目
+- 该项目为前端部分（PC端）
+- 在线地址 [keyteo博客](https://blog.kyeteo.cn)
 - 后端地址 [码云地址](https://gitee.com/is-kyeteo/opensource-blog-server)
 - 数据库地址 [码云](https://gitee.com/is-kyeteo/opensource-blog-database)
 
@@ -15,8 +15,10 @@
 
 ### 技术选型
 - vuejs
+- nuxt
 - iview
-- mavon-editor
+- hljs
+- marked
 - vuex
 - vue-router
 - axios
