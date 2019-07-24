@@ -41,6 +41,7 @@
 import apiUser from '~/api/user'
 import { mapMutations } from 'vuex'
 export default {
+    layout: 'auth',
     head() {
         return {
             title: 'Kyeteo 登陆',
@@ -69,7 +70,7 @@ export default {
             if (resp.done) {
                 this.setUser(resp.data)
                 this.$Notice.success({
-                    name: 'exit',
+                    name: 'login',
                     title: '操作提示',
                     render: h => {
                         return h('div', {

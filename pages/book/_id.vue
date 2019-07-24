@@ -1,15 +1,16 @@
 <template>
     <div class="book">
         <x-header></x-header>
-        <author :user="info.user" :mostViewArticles="info.mostViewArticles" :promotes="info.promotes">
+        <author
+            :user="info.user"
+            :mostViewArticles="info.mostViewArticles"
+            :promotes="info.promotes"
+        >
             <div class="m-book">
                 <div class="b-info">
                     <div class="i-top">
                         <div class="t-cover">
-                            <img
-                                :src="info.book.cover | imgCover"
-                                alt
-                            />
+                            <img :src="info.book.cover | imgCover" alt />
                         </div>
                         <div class="t-text">
                             <div class="te-top">
@@ -57,11 +58,13 @@
                             <span>专题内容</span>
                         </div>
                         <div class="c-cate">
-                            <div class="c-item"
-                            :class="{'c-item-disable': !item.article.length}"
-                            :key="key"
-                            @click="item.article.length ? nav('/article/' + item.article[0].id) : noTip()"
-                            v-for="(item, key) in info.book.section">
+                            <div
+                                class="c-item"
+                                :class="{'c-item-disable': !item.article.length}"
+                                :key="key"
+                                @click="item.article.length ? nav('/article/' + item.article[0].id) : noTip()"
+                                v-for="(item, key) in info.book.section"
+                            >
                                 <div class="i-tag">
                                     <span>{{key + 1}}</span>
                                 </div>
@@ -74,17 +77,18 @@
                     </div>
                 </div>
             </div>
-            <recommend></recommend>
+            <specific-recommend :recommend="recommend" @do-get="getRecommend"></specific-recommend>
             <x-footer></x-footer>
         </author>
     </div>
 </template>
 
 <script type="text/ecmascript-6">
+import apiSpecific from "~/api/specific"
 import { mapState } from 'vuex'
 import author from '~/components/author'
 import xHeader from '~/components/x-header'
-import recommend from '~/components/recommend'
+import specificRecommend from '~/components/specific-recommend'
 import xFooter from "~/components/x-footer"
 export default {
     head() {
@@ -106,7 +110,15 @@ export default {
     },
     data() {
         return {
-            id: this.$route.params.id
+            id: this.$route.params.id,
+            recommend: {
+                form: {
+                    index: 1,
+                    size: 10
+                },
+                list: [],
+                more: true
+            }
         }
     },
     computed: {
@@ -117,13 +129,31 @@ export default {
     components: {
         author,
         xHeader,
-        recommend,
+        specificRecommend,
         xFooter
     },
     methods: {
         noTip() {
             this.$Message.success("文章尚未完成，敬请期待！")
+        },
+        getRecommend() {
+            apiSpecific
+                .recommend({ axios: this.$axios, params: this.recommend.form })
+                .then(res => {
+                    if (res.done) {
+                        res.data.forEach(i => {
+                            this.recommend.list.push(i)
+                        });
+                        this.recommend.form.index += 1
+                        if (this.recommend.list.length === res.page.count) {
+                            this.recommend.more = false
+                        }
+                    }
+                });
         }
+    },
+    mounted () {
+        this.getRecommend()
     }
 }
 </script>
@@ -133,7 +163,7 @@ export default {
     .m-book {
         .b-info {
             background: white;
-            box-shadow: 0 1px 2px 0 rgba(0,0,0,.15);
+            box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.15);
             .i-top {
                 display: flex;
                 padding: 20px;
@@ -236,7 +266,7 @@ export default {
         .b-list {
             margin-top: 20px;
             background: white;
-            box-shadow: 0 1px 2px 0 rgba(0,0,0,.15);
+            box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.15);
             .l-tab {
                 display: flex;
                 height: 50px;
@@ -245,20 +275,20 @@ export default {
                     display: flex;
                     align-items: center;
                     padding: 0 10px;
-                    span{
+                    span {
                         font-size: 16px;
-                        color:#333;
+                        color: #333;
                     }
                     &-active {
                         color: #007fff;
                         border-bottom: 2px solid #007fff;
                     }
-                    &:hover{
+                    &:hover {
                         cursor: pointer;
                     }
                 }
             }
-            .l-content{
+            .l-content {
                 display: block;
                 padding: 30px;
                 background: white;
@@ -297,11 +327,11 @@ export default {
                                 color: #333;
                             }
                         }
-                        &-disable{
-                            .i-text{
-                                color:#b5b7ba;
-                                h3{
-                                    color:#b5b7ba;
+                        &-disable {
+                            .i-text {
+                                color: #b5b7ba;
+                                h3 {
+                                    color: #b5b7ba;
                                 }
                             }
                         }
@@ -330,7 +360,7 @@ export default {
                                 z-index: 10;
                             }
                         }
-                        &:hover{
+                        &:hover {
                             cursor: pointer;
                             background: #f4f5f5;
                         }
@@ -410,7 +440,7 @@ export default {
                 }
             }
         }
-        &:not(:first-child){
+        &:not(:first-child) {
             margin-top: 20px;
         }
     }

@@ -1,6 +1,6 @@
 <template>
     <div class="author">
-        <x-header :sub="false"></x-header>
+        <x-header></x-header>
         <author
             :user="info.user"
             :mostViewArticles="info.mostViewArticles"
@@ -24,6 +24,7 @@
                                 <span>{{item.create_time}}</span>
                             </div>
                             <div class="i-name">
+                                <span v-if="item.section.length">《{{item.section[0].book.title}}》</span>
                                 <span>{{item.title}}</span>
                             </div>
                             <div class="i-desc">
@@ -55,27 +56,31 @@
                 </div>
                 <div class="a-book">
                     <div class="b-title">
-                        <span>他/她的专题</span>
+                        <span>TA的专题</span>
                     </div>
                     <div class="b-list">
-                        <div class="l-item">
+                        <div
+                            class="l-item"
+                            @click="nav('/book/' + item.id)"
+                            :key="key"
+                            v-for="(item, key) in authorBooks.list"
+                        >
                             <div class="i-info">
                                 <span>专题</span>
-                                <span>kyeteo</span>
-                                <span>mysql</span>
+                                <span>{{'id' in item.user ? item.user.nickname : ''}}</span>
                             </div>
                             <div class="i-name">
-                                <span>mysql从入门到精通</span>
+                                <span>{{item.title}}</span>
                             </div>
                             <div class="i-do">
                                 <div class="d-btns">
                                     <div class="b-item">
                                         <i class="iconfont icon-like"></i>
-                                        <span>65</span>
+                                        <span>{{item.praise_count}}</span>
                                     </div>
                                     <div class="b-item">
                                         <i class="iconfont icon-pinglun"></i>
-                                        <span>15</span>
+                                        <span>{{item.comment_count}}</span>
                                     </div>
                                 </div>
                             </div>
@@ -83,25 +88,28 @@
                     </div>
                     <div class="b-more">
                         <div class="m-wrap">
-                            <span>暂无更多文章</span>
+                            <span v-if="authorBooks.more" @click="getBooks">查看更多专题</span>
+                            <span v-else>暂无更多专题</span>
                         </div>
                     </div>
                 </div>
             </div>
-            <recommend></recommend>
+            <specific-recommend :recommend="recommend" @do-get="getRecommend"></specific-recommend>
             <x-footer></x-footer>
         </author>
     </div>
 </template>
 
 <script type="text/ecmascript-6">
-import apiArticle from "~/api/article";
-import { mapState } from "vuex";
-import author from "~/components/author";
-import xHeader from "~/components/x-header";
-import recommend from "~/components/recommend";
+import apiArticle from "~/api/article"
+import apiBook from "~/api/book"
+import apiSpecific from "~/api/specific"
+import { mapState } from "vuex"
+import author from "~/components/author"
+import xHeader from "~/components/x-header"
+import specificRecommend from "~/components/specific-recommend"
 import xFooter from "~/components/x-footer"
-const marked = require("marked");
+const marked = require("marked")
 export default {
     head() {
         return {
@@ -121,7 +129,7 @@ export default {
         };
     },
     fetch({ $axios, store, params }) {
-        return store.dispatch("page/getAuthor", { axios: $axios, params });
+        return store.dispatch("page/getAuthor", { axios: $axios, params })
     },
     data() {
         return {
@@ -133,8 +141,25 @@ export default {
                 },
                 list: [],
                 more: true
+            },
+            authorBooks: {
+                form: {
+                    id: this.$route.params.id,
+                    index: 1,
+                    size: 10
+                },
+                list: [],
+                more: true
+            },
+            recommend: {
+                form: {
+                    index: 1,
+                    size: 10
+                },
+                list: [],
+                more: true
             }
-        };
+        }
     },
     computed: {
         ...mapState("page", {
@@ -146,30 +171,35 @@ export default {
             const mdHtml = marked(md, {
                 sanitize: false
             });
-            let text = "";
+            let text = ""
             try {
                 text = mdHtml
                     .match(/<\S+>(.*)<\S+>/g)
                     .map(i => {
                         return i.match(/<\S+>(.*)<\S+>/)[1];
                     })
-                    .join("");
+                    .join("")
             } finally {
-                text = text.substring(0, 100);
+                text = text.substring(0, 100)
                 if (text.length === 100) {
-                    text = text + "...";
+                    text = text + "..."
                 }
             }
-            return text;
+            return text
         }
     },
     components: {
         author,
         xHeader,
-        recommend,
+        specificRecommend,
         xFooter
     },
     methods: {
+        init() {
+            this.getArticles()
+            this.getBooks()
+            this.getRecommend()
+        },
         getArticles() {
             apiArticle
                 .getByUserId({
@@ -179,20 +209,55 @@ export default {
                 .then(res => {
                     if (res.done) {
                         res.data.forEach(i => {
-                            this.authorArticles.list.push(i);
+                            this.authorArticles.list.push(i)
                         });
-                        this.authorArticles.form.index += 1;
+                        this.authorArticles.form.index += 1
                         if (
                             this.authorArticles.list.length === res.page.count
                         ) {
-                            this.authorArticles.more = false;
+                            this.authorArticles.more = false
+                        }
+                    }
+                });
+        },
+        getBooks() {
+            apiBook
+                .getByUserId({
+                    axios: this.$axios,
+                    params: this.authorBooks.form
+                })
+                .then(res => {
+                    if (res.done) {
+                        res.data.forEach(i => {
+                            this.authorBooks.list.push(i)
+                        });
+                        this.authorBooks.form.index += 1
+                        if (
+                            this.authorBooks.list.length === res.page.count
+                        ) {
+                            this.authorBooks.more = false
+                        }
+                    }
+                })
+        },
+        getRecommend() {
+            apiSpecific
+                .recommend({ axios: this.$axios, params: this.recommend.form })
+                .then(res => {
+                    if (res.done) {
+                        res.data.forEach(i => {
+                            this.recommend.list.push(i)
+                        });
+                        this.recommend.form.index += 1
+                        if (this.recommend.list.length === res.page.count) {
+                            this.recommend.more = false
                         }
                     }
                 });
         }
     },
     mounted() {
-        this.getArticles();
+        this.init()
     }
 };
 </script>
@@ -241,6 +306,8 @@ export default {
                         }
                     }
                     .i-name {
+                        display: flex;
+                        align-items: center;
                         padding: 10px 0 15px 0;
                         span {
                             font-size: 16px;
@@ -391,6 +458,10 @@ export default {
                     }
                     &:hover {
                         cursor: pointer;
+                        background-color: rgba(0, 0, 0, 0.01);
+                        .i-name {
+                            text-decoration: underline;
+                        }
                     }
                 }
             }

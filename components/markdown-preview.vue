@@ -34,9 +34,6 @@ export default {
 <style lang="less">
 @import "../assets/less/markdown/theme";
 @import "../assets/less/markdown/light";
-@import "../assets/less/markdown/dark";
-@import "../assets/less/markdown/one-dark";
-@import "../assets/less/markdown/gitHub";
 @import "../assets/less/markdown/index";
 .markdown-preview h2{
     padding: 0;

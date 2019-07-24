@@ -47,4 +47,7 @@ export default {
     async deleteBook({ axios, params }) {
         return await axios.$post('api/user/deleteBook', params)
     },
+    async checkAuth({ axios, params }) {
+        return await axios.$post('api/user/checkAuth', params)
+    }
 }

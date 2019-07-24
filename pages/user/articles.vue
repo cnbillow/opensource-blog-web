@@ -1,6 +1,6 @@
 <template>
     <div class="articles">
-        <x-header :sub="false"></x-header>
+        <x-header></x-header>
         <user>
             <div class="m-articles">
                 <div class="a-left">
@@ -17,6 +17,7 @@
                                 <span>mysql</span>
                             </div>
                             <div class="i-name">
+                                <span v-if="item.section.length">《{{item.section[0].book.title}}》</span>
                                 <span>{{item.title}}</span>
                             </div>
                             <div class="i-do">
@@ -212,9 +213,7 @@ export default {
                         cursor: pointer;
                         background-color: rgba(0, 0, 0, 0.01);
                         .i-name {
-                            span {
-                                text-decoration: underline;
-                            }
+                            text-decoration: underline;
                         }
                     }
                 }

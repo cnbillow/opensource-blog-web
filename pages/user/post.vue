@@ -1,6 +1,6 @@
 <template>
     <div class="post">
-        <x-header :sub="false"></x-header>
+        <x-header></x-header>
         <user @do-post="doPost" @do-update="doUpdate">
             <div class="m-post">
                 <div class="p-tab">
@@ -112,6 +112,21 @@
                                     @click="toOpenBook"
                                     v-else
                                 >添加</Button>
+                            </div>
+                        </div>
+                        <div class="f-item">
+                            <div class="i-left">
+                                <span>文章分类</span>
+                            </div>
+                            <div class="i-right">
+                                <Tag
+                                    type="dot"
+                                    closable
+                                    :key="key"
+                                    @on-close="delType(item)"
+                                    v-for="(item, key) in article.activeType"
+                                >{{item.name}}</Tag>
+                                <Button icon="ios-add" type="dashed" @click="toOpenType">添加</Button>
                             </div>
                         </div>
                     </div>
@@ -346,6 +361,17 @@
                 />
             </CellGroup>
         </Drawer>
+        <Drawer title="文章类型" :closable="false" width="360" v-model="drawerVisible7">
+            <CellGroup>
+                <Cell
+                    :title="item.name"
+                    :key="key"
+                    :selected="article.activeType.map(i => {return i.id}).includes(item.id)"
+                    @click.native="selectType(item)"
+                    v-for="(item, key) in article.typeList"
+                />
+            </CellGroup>
+        </Drawer>
     </div>
 </template>
 
@@ -386,9 +412,12 @@ export default {
             drawerVisible4: false,
             drawerVisible5: false,
             drawerVisible6: false,
+            drawerVisible7: false,
             article: {
                 tagList: [],
+                tagType: [],
                 activeTag: [],
+                activeType: [],
                 activeKnow: [],
                 activeSource: [],
                 activeGoods: [],
@@ -429,6 +458,12 @@ export default {
                         this.article.form.title = res.data.title
                         this.article.form.text = res.data.text
                         this.article.activeTag = res.data.tag.map(i => {
+                            return {
+                                id: i.id,
+                                name: i.name
+                            }
+                        })
+                        this.article.activeType = res.data.type.map(i => {
                             return {
                                 id: i.id,
                                 name: i.name
@@ -504,6 +539,14 @@ export default {
                 }
             })
         },
+        toOpenType() {
+            apiArticle.getTypes({ axios: this.$axios }).then(res => {
+                if (res.done) {
+                    this.article.typeList = res.data
+                    this.drawerVisible7 = true
+                }
+            })
+        },
         selectTag(e) {
             if (
                 this.article.activeTag
@@ -519,8 +562,28 @@ export default {
             }
             this.article.activeTag.push(e)
         },
+        selectType(e) {
+            if (
+                this.article.activeType
+                    .map(i => {
+                        return i.id
+                    })
+                    .includes(e.id)
+            ) {
+                this.article.activeType = this.article.activeType.filter(i => {
+                    return i.id !== e.id
+                })
+                return
+            }
+            this.article.activeType.push(e)
+        },
         delTag(e) {
             this.article.activeTag = this.article.activeTag.filter(i => {
+                return i.id !== e.id
+            })
+        },
+        delType(e) {
+            this.article.activeType = this.article.activeType.filter(i => {
                 return i.id !== e.id
             })
         },
@@ -588,6 +651,11 @@ export default {
                     return i.id
                 })
                 .join("|")
+            this.article.form.type = this.article.activeType
+                .map(i => {
+                    return i.id
+                })
+                .join("|")
             this.article.form.know = this.article.activeKnow.map(i => {
                 return {
                     name: i.name,
@@ -625,6 +693,11 @@ export default {
                 return
             }
             this.article.form.tag = this.article.activeTag
+                .map(i => {
+                    return i.id
+                })
+                .join("|")
+            this.article.form.type = this.article.activeType
                 .map(i => {
                     return i.id
                 })

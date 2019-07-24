@@ -1,6 +1,6 @@
 <template>
     <div class="article">
-        <x-header :sub="false"></x-header>
+        <x-header></x-header>
         <author
             :user="info.user"
             :mostViewArticles="info.mostViewArticles"
@@ -11,10 +11,7 @@
             <div class="m-book" v-if="'id' in book">
                 <div class="b-top">
                     <div class="t-cover">
-                        <img
-                            :src="book.cover | imgCover"
-                            alt
-                        />
+                        <img :src="book.cover | imgCover" alt />
                     </div>
                     <div class="t-text">
                         <div class="te-top">
@@ -101,14 +98,12 @@
                         </div>
                         <div class="c-post" :class="{'c-post-active': inputFocus['-1']}">
                             <div class="p-left">
-                                <img
-                                    src="https://linknemo-1253378501.picgz.myqcloud.com/linknemo/20190102/5c2c76ae5aa7cb04f55bbcfa?imageView2/1/w/200/h/200"
-                                    alt
-                                />
+                                <img :src="user.avatar | avatarCover" alt />
                             </div>
                             <div class="p-right">
                                 <div class="r-input">
                                     <textarea
+                                        :ref="`-1-comment-input`"
                                         name
                                         id
                                         cols="30"
@@ -119,7 +114,9 @@
                                 </div>
                                 <div class="r-btn">
                                     <div class="b-left">
-                                        <span @click="tryInput('-1')">写下您的回复...</span>
+                                        <span
+                                            @click="tryInput('-1')"
+                                        >{{'id' in user ? '写下您的回复...' : '以游客身份评论'}}</span>
                                     </div>
                                     <div class="b-right" @click="createArticleComment">
                                         <span>发表</span>
@@ -130,14 +127,12 @@
                         <div class="c-list">
                             <div class="l-item" :key="key" v-for="(item, key) in comment.list">
                                 <div class="i-left">
-                                    <img
-                                        src="https://linknemo-1253378501.picgz.myqcloud.com/linknemo/20190102/5c2c76ae5aa7cb04f55bbcfa?imageView2/1/w/200/h/200"
-                                        alt
-                                    />
+                                    <img :src="item.create_user.avatar | avatarCover" alt />
                                 </div>
                                 <div class="i-right">
                                     <div class="r-name">
                                         <span>{{item.create_user.nickname}}</span>
+                                        <span>{{item.create_time | timeFormat}}</span>
                                     </div>
                                     <div class="r-text">
                                         <span v-if="item.refer_user">@{{item.refer_user.nickname}}</span>
@@ -150,13 +145,17 @@
                                             >回复</span>
                                         </div>
                                     </div>
-                                    <div class="r-post" v-if="inputFocus['' + key]">
+                                    <div
+                                        class="r-post"
+                                        :class="{'r-post-active': inputFocus['' + key]}"
+                                    >
                                         <div class="p-input">
                                             <textarea
+                                                :ref="`${key}-comment-input`"
                                                 name
                                                 cols="30"
                                                 rows="10"
-                                                placeholder="请输入您的评论"
+                                                :placeholder="'id' in user ? '请输入您的评论' : '以游客身份回复'"
                                                 v-model="form.text"
                                             ></textarea>
                                         </div>
@@ -175,7 +174,9 @@
                     </div>
                 </div>
             </div>
-            <recommend></recommend>
+            <specific-recommend
+            :recommend="recommend"
+            @do-get="getRecommend"></specific-recommend>
             <x-footer></x-footer>
             <template slot="left">
                 <div class="s-left-section s-left-section-source" v-if="info.article.know.length">
@@ -275,9 +276,10 @@
 <script type="text/ecmascript-6">
 import apiAticle from "~/api/article"
 import apiUser from "~/api/user"
+import apiSpecific from "~/api/specific"
 import { mapState, mapGetters, mapMutations } from "vuex"
 import author from "~/components/author"
-import recommend from "~/components/recommend"
+import specificRecommend from "~/components/specific-recommend"
 import xHeader from "~/components/x-header"
 import xFooter from "~/components/x-footer"
 import markdownPreview from "~/components/markdown-preview"
@@ -301,16 +303,24 @@ export default {
                     src: "/js/qrcode.min.js"
                 }
             ]
-        };
+        }
     },
     fetch({ $axios, store, params }) {
-        return store.dispatch("page/getArticle", { axios: $axios, params });
+        return store.dispatch("page/getArticle", { axios: $axios, params })
     },
     data() {
         return {
             id: this.$route.params.id,
             inputFocus: {},
             comment: {
+                form: {
+                    index: 1,
+                    size: 10
+                },
+                list: [],
+                more: true
+            },
+            recommend: {
                 form: {
                     index: 1,
                     size: 10
@@ -325,17 +335,18 @@ export default {
         };
     },
     computed: {
+        ...mapState(['user']),
         ...mapState("page", {
             info: "article"
         }),
         ...mapGetters("page", ["articleCategory"]),
-        section () {
+        section() {
             if (!this.info.article.section.length) {
                 return {}
             }
             return this.info.article.section[0]
         },
-        book () {
+        book() {
             if (!this.info.article.section.length) {
                 return {}
             }
@@ -346,14 +357,15 @@ export default {
         xFooter,
         author,
         xHeader,
-        recommend,
+        specificRecommend,
         markdownPreview
     },
     methods: {
         ...mapMutations("page", ["UPDATE_ARTICLE_PRAISE_COUNT"]),
         init() {
-            this.genUrlQrcode();
-            this.getArticleComment();
+            this.genUrlQrcode()
+            this.getArticleComment()
+            this.getRecommend()
         },
         genUrlQrcode() {
             try {
@@ -367,21 +379,41 @@ export default {
             }
         },
         tryInput(s, id = "") {
-            this.inputFocus = {};
-            this.form.refer = id;
-            this.$set(this.inputFocus, s, true);
+            const inputEle = Array.isArray(this.$refs[`${s}-comment-input`]) ? this.$refs[`${s}-comment-input`][0] : this.$refs[`${s}-comment-input`]
+            this.inputFocus = {}
+            this.form.refer = id
+            this.$set(this.inputFocus, s, true)
+            this.$nextTick(() => {
+                inputEle.focus()
+            })
         },
         getArticleComment() {
-            this.comment.form.id = this.$route.params.id;
+            this.comment.form.id = this.$route.params.id
             apiAticle
                 .getComment({ axios: this.$axios, params: this.comment.form })
                 .then(res => {
                     if (res.done) {
                         res.data.forEach(i => {
-                            this.comment.list.push(i);
+                            this.comment.list.push(i)
                         });
+                        this.comment.form.index += 1
                         if (this.comment.list.length === res.page.count) {
-                            this.comment.more = false;
+                            this.comment.more = false
+                        }
+                    }
+                });
+        },
+        getRecommend() {
+            apiSpecific
+                .recommend({ axios: this.$axios, params: this.recommend.form })
+                .then(res => {
+                    if (res.done) {
+                        res.data.forEach(i => {
+                            this.recommend.list.push(i)
+                        });
+                        this.recommend.form.index += 1
+                        if (this.recommend.list.length === res.page.count) {
+                            this.recommend.more = false
                         }
                     }
                 });
@@ -392,14 +424,14 @@ export default {
             };
             apiUser.doPraise({ axios: this.$axios, params: data }).then(res => {
                 if (res.done) {
-                    this.UPDATE_ARTICLE_PRAISE_COUNT();
-                    this.$Message.success("感谢您的支持！");
+                    this.UPDATE_ARTICLE_PRAISE_COUNT()
+                    this.$Message.success("感谢您的支持！")
                 }
-            });
+            })
         },
         createArticleComment() {
             if (!this.form.text) {
-                this.$Message.warning("评论不能为空");
+                this.$Message.warning("评论不能为空")
             }
             const data = {
                 id: this.id,
@@ -410,17 +442,17 @@ export default {
                 .createArticleComment({ axios: this.$axios, params: data })
                 .then(res => {
                     if (res.done) {
-                        this.comment.list.unshift(res.data);
-                        this.form.refer = "";
-                        this.form.text = "";
-                        this.inputFocus = {};
-                        this.$Message.success("评论成功！");
+                        this.comment.list.unshift(res.data)
+                        this.form.refer = ""
+                        this.form.text = ""
+                        this.inputFocus = {}
+                        this.$Message.success("评论成功！")
                     }
-                });
+                })
         }
     },
     mounted() {
-        this.init();
+        this.init()
     }
 };
 </script>
@@ -488,7 +520,7 @@ export default {
                                 font-size: 14px;
                                 color: white;
                             }
-                            &:hover{
+                            &:hover {
                                 cursor: pointer;
                             }
                         }
@@ -598,7 +630,7 @@ export default {
                     width: 110px;
                     height: 36px;
                     border-radius: 18px;
-                    background: #dc3dea;
+                    background: #007fff;
                     span {
                         color: white;
                     }
@@ -636,7 +668,7 @@ export default {
                     height: 50px;
                     em {
                         font: 22px/24px Georgia;
-                        color: #f85959;
+                        color: #007fff;
                     }
                     span {
                         font-size: 16px;
@@ -659,7 +691,7 @@ export default {
                     }
                     .p-right {
                         flex: 1;
-                        border: 1px solid #3f404c;
+                        border: 1px solid #007fff;
                         .r-input {
                             display: none;
                             padding: 11px 16px 0;
@@ -688,7 +720,7 @@ export default {
                                 align-items: center;
                                 justify-content: center;
                                 flex-basis: 110px;
-                                background: #3f404c;
+                                background: #027fff;
                                 span {
                                     color: white;
                                 }
@@ -734,6 +766,21 @@ export default {
                             flex: 1;
                             font-size: 14px;
                             color: #555;
+                            .r-name {
+                                display: flex;
+                                align-items: center;
+                                justify-content: space-between;
+                                span {
+                                    &:first-child {
+                                        font-size: 14px;
+                                        color: #333;
+                                    }
+                                    &:last-child {
+                                        font-size: 12px;
+                                        color: #b2bac2;
+                                    }
+                                }
+                            }
                             .r-text {
                                 p {
                                     margin: 0;
@@ -750,7 +797,8 @@ export default {
                                 }
                             }
                             .r-post {
-                                border: 1px solid #3f404c;
+                                display: none;
+                                border: 1px solid #007fff;
                                 .p-input {
                                     padding: 11px 16px 0;
                                     textarea {
@@ -773,7 +821,7 @@ export default {
                                         align-items: center;
                                         justify-content: center;
                                         flex-basis: 110px;
-                                        background: #3f404c;
+                                        background: #027fff;
                                         span {
                                             color: white;
                                         }
@@ -781,6 +829,9 @@ export default {
                                             cursor: pointer;
                                         }
                                     }
+                                }
+                                &-active {
+                                    display: block;
                                 }
                             }
                         }

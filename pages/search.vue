@@ -3,7 +3,7 @@
         <x-header></x-header>
         <div class="s-main">
             <div class="m-left">
-                <div class="l-about" v-if="info.author.length || info.tag.length">
+                <div class="l-about" v-if="info.author.length || 'id' in info.tag">
                     <div class="a-title">
                         <span>Ta们都在关注</span>
                     </div>
@@ -33,7 +33,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="c-item c-item-tag" :key="key" v-for="(item, key) in info.tag">
+                        <div class="c-item c-item-tag" v-if="'id' in info.tag">
                             <div class="t-left">
                                 <div class="l-avatar">
                                     <img src alt />
@@ -41,7 +41,7 @@
                                 <div class="l-info">
                                     <div class="i-name">
                                         <span>标签</span>
-                                        <span>{{item.name}}</span>
+                                        <span>{{info.tag.name}}</span>
                                     </div>
                                     <div class="i-desc">
                                         <span>21关注</span>
@@ -79,21 +79,22 @@
                             >
                                 <div class="i-info">
                                     <span>文章</span>
-                                    <span>{{item.user ? item.user.nickname : ''}}</span>
-                                    <span>mysql</span>
+                                    <span>{{'id' in item.user ? item.user.nickname : ''}}</span>
+                                    <span v-if="item.tag.length">{{item.tag[0].name}}</span>
                                 </div>
                                 <div class="i-name">
+                                    <span v-if="item.section.length">《{{item.section[0].book.title}}》</span>
                                     <span>{{item.title}}</span>
                                 </div>
                                 <div class="i-do">
                                     <div class="d-btns">
                                         <div class="b-item">
                                             <i class="iconfont icon-like"></i>
-                                            <span>65</span>
+                                            <span>{{item.praise_count}}</span>
                                         </div>
                                         <div class="b-item">
                                             <i class="iconfont icon-pinglun"></i>
-                                            <span>15</span>
+                                            <span>{{item.comment_count}}</span>
                                         </div>
                                     </div>
                                 </div>
@@ -127,14 +128,12 @@ import xFooter from "~/components/x-footer";
 export default {
     head() {
         return {
-            title: `Kyeteo 搜索标签${this.info.tag.name}`,
+            title: `Kyeteo 搜索标签 ${this.info.tag.name}`,
             meta: [
                 {
                     hid: "description",
                     name: "description",
-                    content: `Kyeteo vuejs ssr 服务端渲染 esp芯片 树莓派 ${
-                        this.info.tag.name
-                    }`
+                    content: `Kyeteo vuejs ssr 服务端渲染 esp芯片 树莓派 ${this.info.tag.name}`
                 }
             ],
             script: [
@@ -202,7 +201,7 @@ export default {
     .s-main {
         display: flex;
         width: 960px;
-        padding-top: 126px;
+        padding-top: 80px;
         margin: 0 auto;
         .m-left {
             width: 700px;
@@ -490,6 +489,8 @@ export default {
                             }
                         }
                         .i-name {
+                            display: flex;
+                            align-items: center;
                             padding: 10px 0 15px 0;
                             span {
                                 font-size: 16px;
@@ -531,6 +532,9 @@ export default {
                         &:hover {
                             cursor: pointer;
                             background-color: rgba(0, 0, 0, 0.01);
+                            .i-name{
+                                text-decoration: underline;
+                            }
                         }
                     }
                 }
@@ -542,6 +546,9 @@ export default {
                         justify-content: center;
                         height: 30px;
                         background: #f4f5f6;
+                        &:hover{
+                            cursor: pointer;
+                        }
                     }
                 }
             }

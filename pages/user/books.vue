@@ -1,6 +1,6 @@
 <template>
     <div class="books">
-        <x-header :sub="false"></x-header>
+        <x-header></x-header>
         <user>
             <div class="m-books">
                 <div class="b-left">

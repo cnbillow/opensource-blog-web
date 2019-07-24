@@ -1,6 +1,17 @@
 <template>
     <div class="index">
         <x-header @do-search="doSearch"></x-header>
+        <div class="i-tab">
+            <div class="t-wrap">
+                <div class="w-item"
+                :class="{'w-item-active': hotArticles.form.type === item.id}"
+                :key="key"
+                @click="changeType(item)"
+                v-for="(item, key) in hotArticles.types">
+                    <span>{{item.name}}</span>
+                </div>
+            </div>
+        </div>
         <div class="i-main">
             <div class="m-left">
                 <div class="l-articles">
@@ -24,10 +35,11 @@
                         >
                             <div class="i-info">
                                 <span>文章</span>
-                                <span>{{item.user ? item.user.nickname : ''}}</span>
-                                <span>mysql</span>
+                                <span>{{'id' in item.user ? item.user.nickname : ''}}</span>
+                                <span v-if="item.tag.length">{{item.tag[0].name}}</span>
                             </div>
                             <div class="i-name">
+                                <span v-if="item.section.length">《{{item.section[0].book.title}}》</span>
                                 <span>{{item.title}}</span>
                             </div>
                             <div class="i-do">
@@ -97,10 +109,12 @@
                         <span>查看全部</span>
                     </div>
                     <div class="t-content">
-                        <div class="c-item"
-                        :key="key"
-                        @click="nav('/search?tagId=' + item.id)"
-                        v-for="(item, key) in home.tag">
+                        <div
+                            class="c-item"
+                            :key="key"
+                            @click="nav('/search?tagId=' + item.id)"
+                            v-for="(item, key) in home.tag"
+                        >
                             <span>{{item.name}}</span>
                         </div>
                     </div>
@@ -116,15 +130,14 @@
                         </div>
                     </div>
                     <div class="b-content">
-                        <div class="c-item"
-                        :key="key"
-                        @click="nav('/book/' + item.id)"
-                        v-for="(item, key) in home.book">
+                        <div
+                            class="c-item"
+                            :key="key"
+                            @click="nav('/book/' + item.id)"
+                            v-for="(item, key) in home.book"
+                        >
                             <div class="i-cover">
-                                <img
-                                    :src="item.cover | imgCover"
-                                    alt
-                                />
+                                <img :src="item.cover | imgCover" alt />
                             </div>
                             <div class="i-text">
                                 <div class="t-name">
@@ -169,7 +182,14 @@ export default {
         return {
             qiniuBaseUrl: process.env.QINIU_BASE_URL,
             hotArticles: {
+                types: [
+                    {
+                        id: 0,
+                        name: '今日热门'
+                    }
+                ],
                 form: {
+                    type: 0,
                     index: 1,
                     size: 10
                 },
@@ -186,8 +206,26 @@ export default {
         xFooter
     },
     methods: {
-        doSearch (e) {
+        clear () {
+            this.hotArticles.list = []
+            this.hotArticles.form.index = 1
+        },
+        changeType (o) {
+            this.clear()
+            this.hotArticles.form.type = o.id
+            this.getHotArticles()
+        },
+        doSearch(e) {
             this.nav('/search?keyword=' + e)
+        },
+        async getTypes() {
+            const types = await apiArticle.getTypes({ axios: this.$axios })
+            if (types.done) {
+                types.data.forEach(i => {
+                    this.hotArticles.types.push(i)
+                })
+                this.getHotArticles()
+            }
         },
         getHotArticles() {
             apiArticle.getHotArticles({ axios: this.$axios, params: this.hotArticles.form }).then(res => {
@@ -204,7 +242,7 @@ export default {
         }
     },
     mounted() {
-        this.getHotArticles()
+        this.getTypes()
     }
 }
 </script>
@@ -212,6 +250,41 @@ export default {
 <style lang="less">
 .index {
     background: #f4f5f5;
+    .i-tab {
+        position: fixed;
+        top: 61px;
+        left: 0;
+        width: 100%;
+        z-index: 999;
+        background: white;
+        box-shadow: 0px 0px 10px 0px rgba(2, 2, 2, 0.2);
+        .t-wrap {
+            display: flex;
+            width: 960px;
+            height: 46px;
+            margin: 0 auto;
+            .w-item {
+                display: flex;
+                align-items: center;
+                padding-right: 10px;
+                span {
+                    font-size: 14px;
+                }
+                &:not(:first-child) {
+                    padding-left: 10px;
+                }
+                &-active {
+                    span {
+                        color: #007fff;
+                    }
+                }
+                &:hover {
+                    cursor: pointer;
+                    color: #007fff;
+                }
+            }
+        }
+    }
     .i-main {
         display: flex;
         width: 960px;
@@ -251,7 +324,7 @@ export default {
                                 background: hsla(0, 0%, 59.2%, 0.2);
                             }
                         }
-                        &:hover{
+                        &:hover {
                             cursor: pointer;
                             color: #007fff;
                         }
@@ -284,6 +357,8 @@ export default {
                             }
                         }
                         .i-name {
+                            display: flex;
+                            align-items: center;
                             padding: 10px 0 15px 0;
                             span {
                                 font-size: 16px;
@@ -325,10 +400,8 @@ export default {
                         &:hover {
                             cursor: pointer;
                             background-color: rgba(0, 0, 0, 0.01);
-                            .i-name{
-                                span{
-                                    text-decoration: underline;
-                                }
+                            .i-name {
+                                text-decoration: underline;
                             }
                         }
                     }
@@ -341,6 +414,9 @@ export default {
                         justify-content: center;
                         height: 30px;
                         background: #f4f5f6;
+                        &:hover {
+                            cursor: pointer;
+                        }
                     }
                 }
             }
@@ -379,7 +455,7 @@ export default {
                             &:not(:first-child) {
                                 margin-top: 10px;
                             }
-                            &:hover{
+                            &:hover {
                                 cursor: text;
                             }
                         }
@@ -395,7 +471,7 @@ export default {
                         span {
                             color: white;
                         }
-                        &:hover{
+                        &:hover {
                             cursor: pointer;
                         }
                     }
@@ -447,10 +523,10 @@ export default {
                             margin: 0 10px 10px 0;
                             border-radius: 15px;
                             background: #f3f6f3;
-                            &:hover{
+                            &:hover {
                                 cursor: pointer;
                                 background: #007fff;
-                                color:white;
+                                color: white;
                             }
                         }
                     }
@@ -506,7 +582,7 @@ export default {
                                     }
                                 }
                             }
-                            &:hover{
+                            &:hover {
                                 cursor: pointer;
                                 background-color: rgba(0, 0, 0, 0.01);
                             }

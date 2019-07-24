@@ -13,5 +13,8 @@ export default {
     },
     async getTags({ axios }) {
         return await axios.$post('api/article/getTags')
+    },
+    async getTypes({ axios }) {
+        return await axios.$post('api/article/getTypes')
     }
 }

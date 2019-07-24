@@ -17,7 +17,7 @@ Vue.mixin({
         },
         timeFormat(e) {
             if (!e) {
-                return ''
+                return '2019-01-01 00:00'
             }
             return dayjs(e).format('YYYY-MM-DD HH:mm')
         }

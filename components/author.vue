@@ -35,8 +35,9 @@
                                         </div>
                                         <div class="i-right">
                                             <span
-                                            :key="key"
-                                            v-for="(item, key) in user.tag">{{item.name}}</span>
+                                                :key="key"
+                                                v-for="(item, key) in user.tag"
+                                            >{{item.name}}</span>
                                         </div>
                                     </div>
                                     <div class="f-item">
@@ -44,7 +45,7 @@
                                             <i class="iconfont icon-mingpian"></i>
                                         </div>
                                         <div class="i-right">
-                                            <span>{{user.saying.text}}</span>
+                                            <span>{{user.saying_text}}</span>
                                         </div>
                                     </div>
                                 </div>
@@ -53,7 +54,13 @@
                                         <i class="iconfont icon-github"></i>
                                     </div>
                                     <div class="c-item">
-                                        <i class="iconfont icon-weixin"></i>
+                                        <Tooltip placement="right" theme="light">
+                                            <i class="iconfont icon-weixin"></i>
+                                            <div class="weixin-content" slot="content">
+                                                <img :src="user.weixin_url | imgCover" alt="">
+                                                <p>{{user.weixin_desc}}</p>
+                                            </div>
+                                        </Tooltip>
                                     </div>
                                 </div>
                                 <div class="b-focus">
@@ -85,6 +92,9 @@
                                     v-for="(item, key) in userHotArticles"
                                 >
                                     <div class="i-name">
+                                        <span
+                                            v-if="item.section.length"
+                                        >《{{item.section[0].book.title}}》</span>
                                         <span>{{item.title}}</span>
                                     </div>
                                     <div class="i-stati">
@@ -154,7 +164,10 @@
                                         <img :src="item.cover | imgCover" alt />
                                     </div>
                                     <div class="i-text">
-                                        <p>{{item.title}}</p>
+                                        <span
+                                            v-if="item.section.length"
+                                        >《{{item.section[0].book.title}}》</span>
+                                        <span>{{item.title}}</span>
                                     </div>
                                 </div>
                             </div>
@@ -373,6 +386,9 @@ export default {
                                     &:not(:first-child) {
                                         padding-left: 10px;
                                     }
+                                    &:hover{
+                                        cursor: pointer;
+                                    }
                                 }
                             }
                             .b-focus {
@@ -572,8 +588,9 @@ export default {
                                     }
                                     .i-text {
                                         flex: 1;
+                                        align-items: center;
                                         padding-left: 10px;
-                                        p {
+                                        span {
                                             margin: 0;
                                             line-height: 20px;
                                             font-size: 14px;
@@ -624,6 +641,16 @@ export default {
                 }
             }
         }
+    }
+}
+.weixin-content{
+    img{
+        width:150px;
+        height: 150px;
+    }
+    p{
+        padding: 10px 0;
+        text-align: center;
     }
 }
 </style>
