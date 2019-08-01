@@ -27,11 +27,11 @@
 - php-jwt
 - qiniu-sdk
 
-### 项目结构
-- 详情查看博客 [关于网站—项目介绍](http://blog.kyeteo.cn/article/36)
+### 项目简介
+- 详情查看文章 [项目介绍](//blog.kyeteo.cn/article/74)
 
 ### 项目运行
-- 详情查看博客 [关于网站—项目介绍](http://blog.kyeteo.cn/article/36)
+- 详情查看文章 [项目开发运行](https://blog.kyeteo.cn/article/76)
 
 ### 版权信息
 
