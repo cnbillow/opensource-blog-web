@@ -14,60 +14,76 @@
         </header>
         <article class="r-article">
             <div class="a-wrap">
-                <div class="w-field">
-                    <div class="f-item">
-                        <div class="i-left">
-                            <span>用户账号</span>
+                <validate-form ref="form">
+                    <div class="w-field">
+                        <div class="f-item">
+                            <div class="i-left">
+                                <span>用户账号</span>
+                            </div>
+                            <div class="i-right">
+                                <validate-input
+                                    type="text"
+                                    placeholder="请输入账号"
+                                    ref="account"
+                                    v-model="form.account"
+                                    rule="account"
+                                ></validate-input>
+                            </div>
                         </div>
-                        <div class="i-right">
-                            <input type="text" placeholder="用户账号" v-model="form.account" />
+                        <div class="f-item">
+                            <div class="i-left">
+                                <span>用户密码</span>
+                            </div>
+                            <div class="i-right">
+                                <validate-input
+                                    type="password"
+                                    placeholder="请输入密码"
+                                    ref="password"
+                                    v-model="form.password"
+                                    rule="password"
+                                ></validate-input>
+                            </div>
+                        </div>
+                        <div class="f-item">
+                            <div class="i-left">
+                                <span>密码确认</span>
+                            </div>
+                            <div class="i-right">
+                                <validate-input
+                                    type="password"
+                                    placeholder="请确认密码"
+                                    ref="confirmPassword"
+                                    v-model="form.confirmPassword"
+                                    rule="password"
+                                ></validate-input>
+                            </div>
+                        </div>
+                        <div class="f-item">
+                            <div class="i-left">
+                                <span>邀请码</span>
+                            </div>
+                            <div class="i-right">
+                                <input type="text" />
+                                <Tooltip placement="top">
+                                    <a>没有邀请码？</a>
+                                    <div slot="content">
+                                        <p>只有收到邀请码的注册用户才能够发表文章哟</p>
+                                    </div>
+                                </Tooltip>
+                            </div>
                         </div>
                     </div>
-                    <div class="f-item">
-                        <div class="i-left">
-                            <span>用户密码</span>
-                        </div>
-                        <div class="i-right">
-                            <input type="password" placeholder="账号密码" v-model="form.password" />
+                    <div class="w-law">
+                        <input type="checkbox" checked="checked" />
+                        <span>阅读并接受</span>
+                        <a href>《kyeteo用户手册》</a>
+                    </div>
+                    <div class="w-btn">
+                        <div class="b-wrap" @click="toRegister">
+                            <span>注册</span>
                         </div>
                     </div>
-                    <div class="f-item">
-                        <div class="i-left">
-                            <span>密码确认</span>
-                        </div>
-                        <div class="i-right">
-                            <input
-                                type="password"
-                                placeholder="密码确认"
-                                v-model="form.confirmPassword"
-                            />
-                        </div>
-                    </div>
-                    <div class="f-item">
-                        <div class="i-left">
-                            <span>邀请码</span>
-                        </div>
-                        <div class="i-right">
-                            <input type="text" />
-                            <Tooltip placement="top">
-                                <a>没有邀请码？</a>
-                                <div slot="content">
-                                    <p>只有收到邀请码的注册用户才能够发表文章哟</p>
-                                </div>
-                            </Tooltip>
-                        </div>
-                    </div>
-                </div>
-                <div class="w-law">
-                    <input type="checkbox" checked="checked" />
-                    <span>阅读并接受</span>
-                    <a href>《kyeteo用户手册》</a>
-                </div>
-                <div class="w-btn">
-                    <div class="b-wrap" @click="toRegister">
-                        <span>注册</span>
-                    </div>
-                </div>
+                </validate-form>
             </div>
         </article>
     </div>
@@ -75,7 +91,8 @@
 
 <script type="text/ecmascript-6">
 import apiUser from '~/api/user'
-
+import validateInput from '~/components/validate-input'
+import validateForm from '~/components/validate-form'
 export default {
     head() {
         return {
@@ -99,33 +116,31 @@ export default {
             }
         }
     },
+    components: {
+        validateInput,
+        validateForm
+    },
     methods: {
         toRegister() {
-            if (!this.form.account) {
-                this.$Message.error('账号不能为空')
-                return
-            }
-            if (!this.form.password) {
-                this.$Message.error('密码不能为空')
-                return
-            }
-            if (!this.form.confirmPassword) {
-                this.$Message.error('确认密码不能为空')
-                return
-            }
-            if (this.form.password !== this.form.password) {
-                this.$Message.error('密码不一致')
-                return
-            }
-            const data = {
-                account: this.form.account,
-                password: this.form.password
-            }
-            apiUser.register({ axios: this.$axios, params: data }).then(res => {
-                if (res.done) {
-                    this.$Message.success('注册成功')
-                    this.rep('/login')
+            this.$refs.form.validate().then(() => {
+                if (this.form.password !== this.form.confirmPassword) {
+                    this.$Message.error('密码不一致')
+                    return
                 }
+                const data = {
+                    account: this.form.account,
+                    password: this.form.password
+                }
+                apiUser.register({ axios: this.$axios, params: data }).then(res => {
+                    if (res.code === '3200') {
+                        this.$Message.error('用户名已存在')
+                        return
+                    }
+                    if (res.done) {
+                        this.$Message.success('注册成功')
+                        this.rep('/login')
+                    }
+                })
             })
         }
     }

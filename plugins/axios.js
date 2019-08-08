@@ -35,5 +35,8 @@ export default function ({ $axios, redirect }) {
                 duration: 0
             })
         }
+        if (response.data.code === '1100') {
+            redirect('/404')
+        }
     })
 }

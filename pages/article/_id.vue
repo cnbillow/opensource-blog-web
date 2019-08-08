@@ -174,9 +174,7 @@
                     </div>
                 </div>
             </div>
-            <specific-recommend
-            :recommend="recommend"
-            @do-get="getRecommend"></specific-recommend>
+            <specific-recommend :recommend="recommend" @do-get="getRecommend"></specific-recommend>
             <x-footer></x-footer>
             <template slot="left">
                 <div class="s-left-section s-left-section-source" v-if="info.article.know.length">
@@ -250,8 +248,8 @@
                 </div>
             </template>
             <template slot="right">
-                <div class="s-right-cate" v-if="articleCategory.length">
-                    <div class="c-title">
+                <div class="s-right s-right-cate" v-if="articleCategory.length">
+                    <div class="r-title">
                         <i class="iconfont icon-mulu"></i>
                         <span>目录</span>
                     </div>
@@ -264,6 +262,26 @@
                                 <div class="s-item" :key="key1" v-for="(item1, key1) in item.list">
                                     <span>{{item1.name}}</span>
                                 </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="s-right s-right-link" v-if="articleCategory.length">
+                    <div class="r-title">
+                        <i class="iconfont icon-youqingtishi"></i>
+                        <span>友情链接</span>
+                    </div>
+                    <div class="l-content">
+                        <div class="c-item"
+                        :key="key"
+                        @click="openUrl(item.url)"
+                        v-for="(item, key) in info.link">
+                            <div class="i-left">
+                                <span>{{item.name}}</span>
+                            </div>
+                            <div class="i-right">
+                                <span>前往</span>
+                                <i class="iconfont icon-next"></i>
                             </div>
                         </div>
                     </div>
@@ -597,19 +615,6 @@ export default {
                     }
                     &:not(:first-child) {
                         padding-left: 10px;
-                    }
-                }
-            }
-        }
-        .a-content {
-            .v-note-wrapper {
-                width: 664px;
-                .v-note-panel {
-                    border: none;
-                    .v-note-show {
-                        .v-show-content {
-                            padding: 0;
-                        }
                     }
                 }
             }
@@ -954,9 +959,9 @@ export default {
             margin-top: 30px;
         }
     }
-    .s-right-cate {
+    .s-right {
         background: white;
-        .c-title {
+        .r-title {
             display: flex;
             align-items: center;
             height: 42px;
@@ -969,57 +974,27 @@ export default {
                 font-weight: bold;
             }
         }
-        .c-content {
-            position: relative;
-            padding: 20px;
-            .c-item {
-                display: flex;
-                flex-direction: column;
-                .i-title {
-                    position: relative;
+        &-cate {
+            .c-content {
+                position: relative;
+                padding: 20px;
+                .c-item {
                     display: flex;
-                    align-items: center;
-                    width: 100%;
-                    box-sizing: border-box;
-                    height: 26px;
-                    padding-left: 20px;
-                    margin-bottom: 6px;
-                    span {
-                        text-decoration: none;
-                        font-size: 14px;
-                        font-weight: 600;
-                        color: #000;
-                    }
-                    &::before {
-                        position: absolute;
-                        content: "";
-                        left: 0;
-                        top: 50%;
-                        transform: translateY(-50%);
-                        width: 5px;
-                        height: 5px;
-                        border-radius: 2.5px;
-                        background: currentColor;
-                    }
-                    &:hover {
-                        background: #ebedef;
-                        cursor: pointer;
-                    }
-                }
-                .i-sub {
-                    width: 100%;
-                    box-sizing: border-box;
-                    padding-left: 16px;
-                    .s-item {
+                    flex-direction: column;
+                    .i-title {
                         position: relative;
                         display: flex;
                         align-items: center;
+                        width: 100%;
+                        box-sizing: border-box;
                         height: 26px;
                         padding-left: 20px;
                         margin-bottom: 6px;
                         span {
                             text-decoration: none;
-                            color: #333;
+                            font-size: 14px;
+                            font-weight: 600;
+                            color: #000;
                         }
                         &::before {
                             position: absolute;
@@ -1027,9 +1002,9 @@ export default {
                             left: 0;
                             top: 50%;
                             transform: translateY(-50%);
-                            width: 4px;
-                            height: 4px;
-                            border-radius: 2px;
+                            width: 5px;
+                            height: 5px;
+                            border-radius: 2.5px;
                             background: currentColor;
                         }
                         &:hover {
@@ -1037,17 +1012,75 @@ export default {
                             cursor: pointer;
                         }
                     }
+                    .i-sub {
+                        width: 100%;
+                        box-sizing: border-box;
+                        padding-left: 16px;
+                        .s-item {
+                            position: relative;
+                            display: flex;
+                            align-items: center;
+                            height: 26px;
+                            padding-left: 20px;
+                            margin-bottom: 6px;
+                            span {
+                                text-decoration: none;
+                                color: #333;
+                            }
+                            &::before {
+                                position: absolute;
+                                content: "";
+                                left: 0;
+                                top: 50%;
+                                transform: translateY(-50%);
+                                width: 4px;
+                                height: 4px;
+                                border-radius: 2px;
+                                background: currentColor;
+                            }
+                            &:hover {
+                                background: #ebedef;
+                                cursor: pointer;
+                            }
+                        }
+                    }
+                }
+                &::before {
+                    position: absolute;
+                    content: "";
+                    left: 22.5px;
+                    top: 50%;
+                    transform: translateY(-50%);
+                    width: 1px;
+                    height: calc(100% - 40px);
+                    background: #eee;
                 }
             }
-            &::before {
-                position: absolute;
-                content: "";
-                left: 22.5px;
-                top: 50%;
-                transform: translateY(-50%);
-                width: 1px;
-                height: calc(100% - 40px);
-                background: #eee;
+        }
+        &-link {
+            margin-top: 30px;
+            .l-content {
+                display: block;
+                padding: 16px;
+                background: white;
+                .c-item {
+                    display: flex;
+                    align-items: center;
+                    justify-content: space-between;
+                    height: 50px;
+                    .i-left{
+                        font-size: 14px;
+                        color:#333;
+                        font-weight: 600;
+                    }
+                    &:hover {
+                        cursor: pointer;
+                        background-color: rgba(0, 0, 0, 0.01);
+                        .i-left {
+                            text-decoration: underline;
+                        }
+                    }
+                }
             }
         }
     }

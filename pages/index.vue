@@ -287,7 +287,7 @@ export default {
     .i-main {
         display: flex;
         width: 960px;
-        padding-top: 126px;
+        padding: 126px 0 30px 0;
         margin: 0 auto;
         .m-left {
             width: 700px;

@@ -9,6 +9,7 @@ export const state = () => ({
         user: {
             tag: []
         },
+        link: [],
         article: {
             title: '',
             text: '',

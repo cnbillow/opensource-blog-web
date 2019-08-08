@@ -1,8 +1,8 @@
 {
-  "name": "nuxt",
+  "name": "kyeteo-blog",
   "version": "1.0.0",
-  "description": "My sensational Nuxt.js project",
-  "author": "Neho",
+  "description": "kyeteo开源博客是基于vuejs(vue cli3创建) + thinkphp5前后端分离的完整项目",
+  "author": "kyeteo",
   "private": true,
   "scripts": {
     "test": "jest",

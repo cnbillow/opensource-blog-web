@@ -1,6 +1,6 @@
 <template>
     <div class="author">
-        <div class="l-cover"></div>
+        <div class="l-cover" :style="{backgroundImage: userCover}"></div>
         <div class="l-outline">
             <div class="o-wrap">
                 <div class="w-item">
@@ -212,7 +212,15 @@ export default {
             workType: 1
         }
     },
-    props: ['user', 'mostViewArticles', 'promotes', 'userHotArticles', 'userHotBooks']
+    props: ['user', 'mostViewArticles', 'promotes', 'userHotArticles', 'userHotBooks'],
+    computed: {
+        userCover () {
+            if (!this.user.cover) {
+                return false
+            }
+            return `url(${process.env.QINIU_BASE_URL + this.user.cover})`
+        }
+    }
 }
 </script>
 
@@ -241,7 +249,7 @@ export default {
 .author {
     .l-cover {
         height: 380px;
-        background: url(https://linknemo-1253378501.picgz.myqcloud.com/linknemo/20190211/5c611c0a5aa7cb73d5630095?imageView2/q/50!)
+        background: url(//cdn.kyeteo.cn/FpMZM0QyNdUTjBB1PI7kDoNYLpRs)
             center no-repeat;
         background-size: cover;
     }
@@ -530,8 +538,8 @@ export default {
                 }
             }
             .w-mid {
-                flex: 1;
-                flex-shrink: 0;
+                flex:1;
+                width: 0;
                 min-height: 1000px;
                 padding: 30px;
             }
