@@ -1,6 +1,6 @@
 export default {
-    async getHotArticles({ axios, params }) {
-        return await axios.$post('api/article/getHot', params)
+    async getArticles({ axios, params }) {
+        return await axios.$post('api/article/getArticles', params)
     },
     async getComment({ axios, params }) {
         return await axios.$post('api/article/getComment', params)

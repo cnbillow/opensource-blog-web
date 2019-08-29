@@ -107,8 +107,8 @@
                         </div>
                     </div>
                     <div class="a-more">
-                        <div class="m-wrap">
-                            <span v-if="article.more" @click="doSearch">查看更多文章</span>
+                        <div class="m-wrap" @click="doSearch">
+                            <span v-if="article.more">查看更多文章</span>
                             <span v-else>暂无更多文章</span>
                         </div>
                     </div>

@@ -16,6 +16,9 @@ module.exports = app => {
                     ctx.body = JSON.stringify(profile)
                 }
             }
+            if (!login.done) {
+                ctx.body = JSON.stringify(login)
+            }
         } catch (e) {
             ctx.body = 'http server error'
         }

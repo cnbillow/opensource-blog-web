@@ -50,8 +50,8 @@
                         </div>
                     </div>
                     <div class="a-more">
-                        <div class="m-wrap">
-                            <span v-if="authorArticles.more" @click="getArticles">查看更多文章</span>
+                        <div class="m-wrap" @click="getArticles">
+                            <span v-if="authorArticles.more">查看更多文章</span>
                             <span v-else>暂无更多文章</span>
                         </div>
                     </div>
@@ -89,8 +89,8 @@
                         </div>
                     </div>
                     <div class="b-more">
-                        <div class="m-wrap">
-                            <span v-if="authorBooks.more" @click="getBooks">查看更多专题</span>
+                        <div class="m-wrap" @click="getBooks">
+                            <span v-if="authorBooks.more">查看更多专题</span>
                             <span v-else>暂无更多专题</span>
                         </div>
                     </div>

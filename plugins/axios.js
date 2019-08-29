@@ -38,5 +38,26 @@ export default function ({ $axios, redirect }) {
         if (response.data.code === '1100') {
             redirect('/404')
         }
+        if (response.data.code === '1200') {
+            Vue.prototype.$Notice.warning({
+                name: 'login',
+                title: '危险提示',
+                render: h => {
+                    return h('div', {
+                        style: {
+                            display: 'flex',
+                            alignItems: 'center'
+                        }
+                    }, [
+                            h('span', {
+                                style: {
+                                    paddingRight: '10px'
+                                }
+                            }, '您无法获取该数据，请勿恶意提交')
+                        ])
+                },
+                duration: 0
+            })
+        }
     })
 }

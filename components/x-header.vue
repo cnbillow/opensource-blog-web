@@ -17,7 +17,7 @@
             </div>
             <div class="w-right">
                 <div class="r-search">
-                    <input type="text" placeholder="搜索更新啦" v-model="keyword" />
+                    <input type="text" placeholder="文章/标签" v-model="keyword" />
                     <i class="iconfont icon-sousuo" @click="doSearch"></i>
                 </div>
                 <div class="r-do">
@@ -82,8 +82,7 @@ export default {
                                     }
                                 }, '注销成功')
                             ])
-                    },
-                    duration: 3000
+                    }
                 })
                 this.nav('/')
             }

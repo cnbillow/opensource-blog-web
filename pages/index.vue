@@ -4,10 +4,10 @@
         <div class="i-tab">
             <div class="t-wrap">
                 <div class="w-item"
-                :class="{'w-item-active': hotArticles.form.type === item.id}"
+                :class="{'w-item-active': articles.form.type === item.id}"
                 :key="key"
                 @click="changeType(item)"
-                v-for="(item, key) in hotArticles.types">
+                v-for="(item, key) in articles.types">
                     <span>{{item.name}}</span>
                 </div>
             </div>
@@ -16,13 +16,19 @@
             <div class="m-left">
                 <div class="l-articles">
                     <div class="a-tab">
-                        <div class="t-item t-item-active">
+                        <div class="t-item"
+                        :class="{'t-item-active': articles.form.sort === 0}"
+                        @click="changeSort(0)">
                             <span>推荐</span>
                         </div>
-                        <div class="t-item">
+                        <div class="t-item"
+                        :class="{'t-item-active': articles.form.sort === 1}"
+                        @click="changeSort(1)">
                             <span>最新</span>
                         </div>
-                        <div class="t-item">
+                        <div class="t-item"
+                        :class="{'t-item-active': articles.form.sort === 2}"
+                        @click="changeSort(2)">
                             <span>热门</span>
                         </div>
                     </div>
@@ -31,7 +37,7 @@
                             class="l-item"
                             :key="key"
                             @click="nav('/article/' + item.id)"
-                            v-for="(item, key) in hotArticles.list"
+                            v-for="(item, key) in articles.list"
                         >
                             <div class="i-info">
                                 <span>文章</span>
@@ -62,8 +68,8 @@
                         </div>
                     </div>
                     <div class="a-more">
-                        <div class="m-wrap">
-                            <span v-if="hotArticles.more" @click="getHotArticles">查看更多文章</span>
+                        <div class="m-wrap" @click="getArticles">
+                            <span v-if="articles.more">查看更多文章</span>
                             <span v-else>暂无更多文章</span>
                         </div>
                     </div>
@@ -180,7 +186,7 @@ export default {
     data() {
         return {
             qiniuBaseUrl: process.env.QINIU_BASE_URL,
-            hotArticles: {
+            articles: {
                 types: [
                     {
                         id: 0,
@@ -189,6 +195,7 @@ export default {
                 ],
                 form: {
                     type: 0,
+                    sort: 0,
                     index: 1,
                     size: 10
                 },
@@ -206,13 +213,18 @@ export default {
     },
     methods: {
         clear () {
-            this.hotArticles.list = []
-            this.hotArticles.form.index = 1
+            this.articles.list = []
+            this.articles.form.index = 1
         },
         changeType (o) {
             this.clear()
-            this.hotArticles.form.type = o.id
-            this.getHotArticles()
+            this.articles.form.type = o.id
+            this.getArticles()
+        },
+        changeSort (n) {
+            this.clear()
+            this.articles.form.sort = n
+            this.getArticles()
         },
         doSearch(e) {
             this.nav('/search?keyword=' + e)
@@ -221,20 +233,20 @@ export default {
             const types = await apiArticle.getTypes({ axios: this.$axios })
             if (types.done) {
                 types.data.forEach(i => {
-                    this.hotArticles.types.push(i)
+                    this.articles.types.push(i)
                 })
-                this.getHotArticles()
+                this.getArticles()
             }
         },
-        getHotArticles() {
-            apiArticle.getHotArticles({ axios: this.$axios, params: this.hotArticles.form }).then(res => {
+        getArticles() {
+            apiArticle.getArticles({ axios: this.$axios, params: this.articles.form }).then(res => {
                 if (res.done) {
                     res.data.forEach(i => {
-                        this.hotArticles.list.push(i)
+                        this.articles.list.push(i)
                     })
-                    this.hotArticles.form.index += 1
-                    if (this.hotArticles.list.length === res.page.count) {
-                        this.hotArticles.more = false
+                    this.articles.form.index += 1
+                    if (this.articles.list.length === res.page.count) {
+                        this.articles.more = false
                     }
                 }
             })
