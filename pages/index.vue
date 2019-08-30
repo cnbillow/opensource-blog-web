@@ -3,11 +3,13 @@
         <x-header @do-search="doSearch"></x-header>
         <div class="i-tab">
             <div class="t-wrap">
-                <div class="w-item"
-                :class="{'w-item-active': articles.form.type === item.id}"
-                :key="key"
-                @click="changeType(item)"
-                v-for="(item, key) in articles.types">
+                <div
+                    class="w-item"
+                    :class="{'w-item-active': home.articles.form.type === item.id}"
+                    :key="key"
+                    @click="changeType(item)"
+                    v-for="(item, key) in home.articles.types"
+                >
                     <span>{{item.name}}</span>
                 </div>
             </div>
@@ -16,60 +18,65 @@
             <div class="m-left">
                 <div class="l-articles">
                     <div class="a-tab">
-                        <div class="t-item"
-                        :class="{'t-item-active': articles.form.sort === 0}"
-                        @click="changeSort(0)">
+                        <div
+                            class="t-item"
+                            :class="{'t-item-active': home.articles.form.sort === 0}"
+                            @click="changeSort(0)"
+                        >
                             <span>推荐</span>
                         </div>
-                        <div class="t-item"
-                        :class="{'t-item-active': articles.form.sort === 1}"
-                        @click="changeSort(1)">
+                        <div
+                            class="t-item"
+                            :class="{'t-item-active': home.articles.form.sort === 1}"
+                            @click="changeSort(1)"
+                        >
                             <span>最新</span>
                         </div>
-                        <div class="t-item"
-                        :class="{'t-item-active': articles.form.sort === 2}"
-                        @click="changeSort(2)">
+                        <div
+                            class="t-item"
+                            :class="{'t-item-active': home.articles.form.sort === 2}"
+                            @click="changeSort(2)"
+                        >
                             <span>热门</span>
                         </div>
                     </div>
-                    <div class="a-list">
-                        <div
-                            class="l-item"
-                            :key="key"
-                            @click="nav('/article/' + item.id)"
-                            v-for="(item, key) in articles.list"
-                        >
-                            <div class="i-info">
-                                <span>文章</span>
-                                <span>{{'id' in item.user ? item.user.nickname : ''}}</span>
-                                <span v-if="item.tag.length">{{item.tag[0].name}}</span>
-                            </div>
-                            <div class="i-name">
-                                <span v-if="item.section.length && item.section[0].book">《{{item.section[0].book.title}}》</span>
-                                <span>{{item.title}}</span>
-                            </div>
-                            <div class="i-do">
-                                <div class="d-btns">
-                                    <div class="b-item">
-                                        <i class="iconfont icon-like"></i>
-                                        <span>{{item.praise_count}}</span>
-                                    </div>
-                                    <div class="b-item">
-                                        <i class="iconfont icon-pinglun"></i>
-                                        <span>{{item.comment_count}}</span>
+                    <ul class="a-list">
+                        <li class="l-item" :key="key" v-for="(item, key) in home.articles.list">
+                            <a :href="'/article/' + item.id" target="_blank">
+                                <div class="i-info">
+                                    <span>文章</span>
+                                    <span>{{'id' in item.user ? item.user.nickname : ''}}</span>
+                                    <span v-if="item.tag.length">{{item.tag[0].name}}</span>
+                                </div>
+                                <div class="i-name">
+                                    <span
+                                        v-if="item.section.length && item.section[0].book"
+                                    >《{{item.section[0].book.title}}》</span>
+                                    <span>{{item.title}}</span>
+                                </div>
+                                <div class="i-do">
+                                    <div class="d-btns">
+                                        <div class="b-item">
+                                            <i class="iconfont icon-like"></i>
+                                            <span>{{item.praise_count}}</span>
+                                        </div>
+                                        <div class="b-item">
+                                            <i class="iconfont icon-pinglun"></i>
+                                            <span>{{item.comment_count}}</span>
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
-                            <div
-                                class="i-cover"
-                                :style="{backgroundImage: `url(${qiniuBaseUrl + item.cover})`}"
-                                v-if="item.cover"
-                            ></div>
-                        </div>
-                    </div>
+                                <div
+                                    class="i-cover"
+                                    :style="{backgroundImage: `url(${qiniuBaseUrl + item.cover})`}"
+                                    v-if="item.cover"
+                                ></div>
+                            </a>
+                        </li>
+                    </ul>
                     <div class="a-more">
-                        <div class="m-wrap" @click="getArticles">
-                            <span v-if="articles.more">查看更多文章</span>
+                        <div class="m-wrap" @click="home.articles.more ? getArticles() : ''">
+                            <span v-if="home.articles.more">查看更多文章</span>
                             <span v-else>暂无更多文章</span>
                         </div>
                     </div>
@@ -115,14 +122,14 @@
                         <span>查看全部</span>
                     </div>
                     <div class="t-content">
-                        <div
+                        <a
                             class="c-item"
+                            :href="'/search?tagId=' + item.id"
                             :key="key"
-                            @click="nav('/search?tagId=' + item.id)"
                             v-for="(item, key) in home.tag"
                         >
                             <span>{{item.name}}</span>
-                        </div>
+                        </a>
                     </div>
                 </div>
                 <div class="r-section r-section-book">
@@ -136,23 +143,20 @@
                         </div>
                     </div>
                     <div class="b-content">
-                        <div
-                            class="c-item"
-                            :key="key"
-                            @click="nav('/book/' + item.id)"
-                            v-for="(item, key) in home.book"
-                        >
-                            <div class="i-cover">
-                                <img :src="item.cover | imgCover" alt />
-                            </div>
-                            <div class="i-text">
-                                <div class="t-name">
-                                    <span>{{item.title}}</span>
+                        <div class="c-item" :key="key" v-for="(item, key) in home.book">
+                            <a :href="'/book/' + item.id">
+                                <div class="i-cover">
+                                    <img :src="item.cover | imgCover" alt />
                                 </div>
-                                <div class="t-author">
-                                    <span>{{item.user.nickname}}</span>
+                                <div class="i-text">
+                                    <div class="t-name">
+                                        <span>{{item.title}}</span>
+                                    </div>
+                                    <div class="t-author">
+                                        <span>{{item.user.nickname}}</span>
+                                    </div>
                                 </div>
-                            </div>
+                            </a>
                         </div>
                     </div>
                 </div>
@@ -163,7 +167,7 @@
 
 <script>
 import apiArticle from '~/api/article'
-import { mapState } from 'vuex'
+import { mapState, mapMutations, mapActions } from 'vuex'
 import xHeader from '~/components/x-header'
 import xFooter from "~/components/x-footer"
 export default {
@@ -180,28 +184,14 @@ export default {
             ]
         }
     },
-    fetch({ $axios, store, params }) {
-        return store.dispatch('page/getIndex', { axios: $axios })
+    async fetch({ $axios, store, params }) {
+        await store.dispatch('page/getHome', { axios: $axios })
+        await store.dispatch('page/getHomeTypes', { axios: $axios })
+        await store.dispatch('page/getHomeArticles', { axios: $axios })
     },
     data() {
         return {
-            qiniuBaseUrl: process.env.QINIU_BASE_URL,
-            articles: {
-                types: [
-                    {
-                        id: 0,
-                        name: '今日热门'
-                    }
-                ],
-                form: {
-                    type: 0,
-                    sort: 0,
-                    index: 1,
-                    size: 10
-                },
-                list: [],
-                more: true
-            }
+            qiniuBaseUrl: process.env.QINIU_BASE_URL
         }
     },
     computed: {
@@ -212,48 +202,24 @@ export default {
         xFooter
     },
     methods: {
-        clear () {
-            this.articles.list = []
-            this.articles.form.index = 1
+        ...mapMutations('page', ['clearHomeArticle', 'changeHomeArticleType', 'changeHomeArticleSort']),
+        ...mapActions('page', ['getHomeArticles']),
+        changeType(o) {
+            this.clearHomeArticle()
+            this.changeHomeArticleType(o)
+            this.getHomeArticles({ axios: this.$axios })
         },
-        changeType (o) {
-            this.clear()
-            this.articles.form.type = o.id
-            this.getArticles()
+        changeSort(n) {
+            this.clearHomeArticle()
+            this.changeHomeArticleSort(n)
+            this.getHomeArticles({ axios: this.$axios })
         },
-        changeSort (n) {
-            this.clear()
-            this.articles.form.sort = n
-            this.getArticles()
+        getArticles() {
+            this.getHomeArticles({ axios: this.$axios })
         },
         doSearch(e) {
             this.nav('/search?keyword=' + e)
-        },
-        async getTypes() {
-            const types = await apiArticle.getTypes({ axios: this.$axios })
-            if (types.done) {
-                types.data.forEach(i => {
-                    this.articles.types.push(i)
-                })
-                this.getArticles()
-            }
-        },
-        getArticles() {
-            apiArticle.getArticles({ axios: this.$axios, params: this.articles.form }).then(res => {
-                if (res.done) {
-                    res.data.forEach(i => {
-                        this.articles.list.push(i)
-                    })
-                    this.articles.form.index += 1
-                    if (this.articles.list.length === res.page.count) {
-                        this.articles.more = false
-                    }
-                }
-            })
         }
-    },
-    mounted() {
-        this.getTypes()
     }
 }
 </script>
@@ -345,6 +311,7 @@ export default {
                     .l-item {
                         position: relative;
                         padding: 15px 100px 15px 20px;
+                        list-style: none;
                         .i-info {
                             display: flex;
                             align-items: center;
@@ -413,6 +380,7 @@ export default {
                             background-color: rgba(0, 0, 0, 0.01);
                             .i-name {
                                 text-decoration: underline;
+                                text-decoration-color: #333;
                             }
                         }
                     }
@@ -534,6 +502,7 @@ export default {
                             margin: 0 10px 10px 0;
                             border-radius: 15px;
                             background: #f3f6f3;
+                            color: #515a6e;
                             &:hover {
                                 cursor: pointer;
                                 background: #007fff;
@@ -556,29 +525,31 @@ export default {
                     }
                     .b-content {
                         .c-item {
-                            display: flex;
-                            padding: 20px 10px;
-                            .i-cover {
-                                flex-basis: 52px;
-                                height: 72px;
-                                img {
-                                    width: 100%;
-                                    height: 100%;
-                                }
-                            }
-                            .i-text {
-                                padding-left: 10px;
-                                .t-name {
-                                    span {
-                                        font-size: 14px;
+                            a {
+                                display: flex;
+                                padding: 20px 10px;
+                                .i-cover {
+                                    flex-basis: 52px;
+                                    height: 72px;
+                                    img {
+                                        width: 100%;
+                                        height: 100%;
                                     }
                                 }
-                                .t-author {
-                                    display: flex;
-                                    align-items: center;
-                                    span {
-                                        position: relative;
-                                        color: #fc4544;
+                                .i-text {
+                                    padding-left: 10px;
+                                    .t-name {
+                                        span {
+                                            font-size: 14px;
+                                        }
+                                    }
+                                    .t-author {
+                                        display: flex;
+                                        align-items: center;
+                                        span {
+                                            position: relative;
+                                            color: #fc4544;
+                                        }
                                     }
                                 }
                             }

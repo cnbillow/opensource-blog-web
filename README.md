@@ -1,6 +1,6 @@
 # kyeteo开源博客
 
-## 项目说明
+### 项目说明
 - kyeteo开源博客是基于vuejs(nuxt创建) + thinkphp5前后端分离的完整项目
 - 该项目为前端部分（PC端）
 - 在线地址 [keyteo博客](https://blog.kyeteo.cn)
@@ -26,6 +26,16 @@
 - thinkphp5
 - php-jwt
 - qiniu-sdk
+
+### 项目界面
+**首页**
+![首页](https://blog.kyeteo.cn/image/surface-home.png)
+**文章页**
+![文章页](https://blog.kyeteo.cn/image/surface-article.png)
+**发表文章**
+![发表文章](https://blog.kyeteo.cn/image/surface-post.png)
+**检索**
+![检索](https://blog.kyeteo.cn/image/surface-search.png)
 
 ### 项目简介
 - 详情查看文章 [项目介绍](//blog.kyeteo.cn/article/74)

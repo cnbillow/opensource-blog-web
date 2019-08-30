@@ -1,9 +1,26 @@
 import apiPage from '~/api/page'
+import apiArticle from '~/api/article'
 
 export const state = () => ({
     home: {
         tag: [],
-        book: []
+        book: [],
+        articles: {
+            types: [
+                {
+                    id: 0,
+                    name: '今日热门'
+                }
+            ],
+            form: {
+                type: 0,
+                sort: 0,
+                index: 1,
+                size: 10
+            },
+            list: [],
+            more: true
+        }
     },
     article: {
         user: {
@@ -62,7 +79,7 @@ export const getters = {
                     })
                     return
                 }
-                arr[arr.length -1].list.push({
+                arr[arr.length - 1].list.push({
                     name: name
                 })
             })
@@ -75,7 +92,32 @@ export const getters = {
 
 export const mutations = {
     setHome(state, o) {
-        state.home = o
+        state.home.tag = o.tag
+        state.home.book = o.book
+    },
+    clearHomeArticle(state) {
+        state.home.articles.list = []
+        state.home.articles.form.index = 1
+    },
+    changeHomeArticleType(state, o) {
+        state.home.articles.form.type = o.id
+    },
+    changeHomeArticleSort(state, n) {
+        state.home.articles.form.sort = n
+    },
+    initHomeArticlesTypes(state, a) {
+        a.forEach(i => {
+            state.home.articles.types.push(i)
+        })
+    },
+    pushHomeArticles(state, o) {
+        o.data.forEach(i => {
+            state.home.articles.list.push(i)
+        })
+        state.home.articles.form.index += 1
+        if (state.home.articles.list.length === o.page.count) {
+            state.home.articles.more = false
+        }
     },
     setArticle(state, o) {
         state.article = o
@@ -91,32 +133,56 @@ export const mutations = {
     }
 }
 export const actions = {
-    async getIndex({ commit }, { axios }) {
-        const resp = await apiPage.index({ axios })
-        if (resp.done === true) {
-            commit('setHome', resp.data)
-        }
+    getHome({ dispatch, commit }, { axios }) {
+        return new Promise((resolve) => {
+            apiPage.index({ axios }).then(resp => {
+                if (resp.done === true) {
+                    commit('setHome', resp.data)
+                    resolve()
+                }
+            })
+        })
+    },
+    getHomeTypes({ dispatch, commit }, { axios }) {
+        return new Promise((resolve) => {
+            apiArticle.getTypes({ axios }).then(types => {
+                if (types.done) {
+                    commit('initHomeArticlesTypes', types.data)
+                    resolve()
+                }
+            })
+        })
+    },
+    getHomeArticles({ commit, state }, { axios }) {
+        return new Promise((resolve) => {
+            apiArticle.getArticles({ axios, params: state.home.articles.form }).then(res => {
+                if (res.done) {
+                    commit('pushHomeArticles', res)
+                    resolve()
+                }
+            })
+        })
     },
     async getArticle({ commit }, { axios, params }) {
-        const resp = await apiPage.article({axios, params})
+        const resp = await apiPage.article({ axios, params })
         if (resp.done === true) {
             commit('setArticle', resp.data)
         }
     },
     async getBook({ commit }, { axios, params }) {
-        const resp = await apiPage.book({axios, params})
+        const resp = await apiPage.book({ axios, params })
         if (resp.done === true) {
             commit('setBook', resp.data)
         }
     },
     async getAuthor({ commit }, { axios, params }) {
-        const resp = await apiPage.author({axios, params})
+        const resp = await apiPage.author({ axios, params })
         if (resp.done === true) {
             commit('setAuhor', resp.data)
         }
     },
     async getSearch({ commit }, { axios, params }) {
-        const resp = await apiPage.search({axios, params})
+        const resp = await apiPage.search({ axios, params })
         if (resp.done === true) {
             commit('setSearch', resp.data)
         }

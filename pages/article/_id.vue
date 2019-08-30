@@ -272,17 +272,16 @@
                         <span>友情链接</span>
                     </div>
                     <div class="l-content">
-                        <div class="c-item"
-                        :key="key"
-                        @click="openUrl(item.url)"
-                        v-for="(item, key) in info.link">
-                            <div class="i-left">
-                                <span>{{item.name}}</span>
-                            </div>
-                            <div class="i-right">
-                                <span>前往</span>
-                                <i class="iconfont icon-next"></i>
-                            </div>
+                        <div class="c-item" :key="key" v-for="(item, key) in info.link">
+                            <a :href="item.url" target="_blank">
+                                <div class="i-left">
+                                    <span>{{item.name}}</span>
+                                </div>
+                                <div class="i-right">
+                                    <span>前往</span>
+                                    <i class="iconfont icon-next"></i>
+                                </div>
+                            </a>
                         </div>
                     </div>
                 </div>
@@ -1064,20 +1063,22 @@ export default {
                 padding: 16px;
                 background: white;
                 .c-item {
-                    display: flex;
-                    align-items: center;
-                    justify-content: space-between;
-                    height: 50px;
-                    .i-left{
-                        font-size: 14px;
-                        color:#333;
-                        font-weight: 600;
-                    }
-                    &:hover {
-                        cursor: pointer;
-                        background-color: rgba(0, 0, 0, 0.01);
+                    a {
+                        display: flex;
+                        align-items: center;
+                        justify-content: space-between;
+                        height: 50px;
                         .i-left {
-                            text-decoration: underline;
+                            font-size: 14px;
+                            color: #333;
+                            font-weight: 600;
+                        }
+                        &:hover {
+                            cursor: pointer;
+                            background-color: rgba(0, 0, 0, 0.01);
+                            .i-left {
+                                text-decoration: underline;
+                            }
                         }
                     }
                 }
