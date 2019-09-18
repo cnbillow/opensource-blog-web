@@ -106,6 +106,12 @@ export const mutations = {
         state.home.articles.form.sort = n
     },
     initHomeArticlesTypes(state, a) {
+        state.home.articles.types = [
+            {
+                id: 0,
+                name: '今日热门'
+            }
+        ]
         a.forEach(i => {
             state.home.articles.types.push(i)
         })

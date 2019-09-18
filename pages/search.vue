@@ -128,12 +128,12 @@ import xFooter from "~/components/x-footer";
 export default {
     head() {
         return {
-            title: `Kyeteo 搜索标签 ${this.info.tag.name}`,
+            title: this.$route.query.keyword ? `Kyeteo 搜索关键字 ${this.$route.query.keyword}` : `Kyeteo 搜索标签 ${this.info.tag.name}`,
             meta: [
                 {
                     hid: "description",
                     name: "description",
-                    content: `Kyeteo vuejs ssr 服务端渲染 esp芯片 树莓派 ${this.info.tag.name}`
+                    content: this.$route.query.keyword ? 'Kyeteo vuejs ssr 服务端渲染 esp芯片 树莓派' : `Kyeteo vuejs ssr 服务端渲染 esp芯片 树莓派 ${this.info.tag.name}`
                 }
             ],
             script: [

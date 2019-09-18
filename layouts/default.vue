@@ -1,5 +1,7 @@
 <template>
-  <div class="layout-default" :class="{'layout-default-with-tip': app.tipVisible}">
+  <div class="layout-default"
+  :class="{'layout-default-with-tip': app.tipVisible}"
+  @click="defaultLayoutClick">
     <nuxt />
     <specific-tip
     :width="tipWith"
@@ -12,6 +14,7 @@
 import { mapState } from 'vuex'
 import { mapMutations } from 'vuex'
 import specificTip from '~/components/specific-tip'
+import event from '~/utils/event'
 export default {
     computed: {
         ...mapState(['app']),
@@ -29,6 +32,9 @@ export default {
     },
     methods: {
         ...mapMutations(['setAppTip']),
+        defaultLayoutClick () {
+            event.$emit('default-layout-click')
+        },
         closeTip () {
             this.setAppTip(false)
         }

@@ -17,7 +17,12 @@
             </div>
             <div class="w-right">
                 <div class="r-search">
-                    <input type="text" placeholder="文章/标签" v-model="keyword" />
+                    <input
+                        type="text"
+                        placeholder="文章/标签"
+                        v-model="keyword"
+                        @keydown.enter="doSearch"
+                    />
                     <i class="iconfont icon-sousuo" @click="doSearch"></i>
                 </div>
                 <div class="r-do">
@@ -33,10 +38,47 @@
                     <div class="d-item" v-else>
                         <img
                             :src="user.avatar | avatarCover"
-                            @click="nav('/author/' + user.id)"
+                            @click.stop="dropShow = true"
                             alt
                         />
-                        <span @click="toExit">注销</span>
+                        <div class="i-dropdown" @click.stop="" v-if="dropShow">
+                            <div class="drop-block">
+                                <div class="b-item" @click="nav('/user/post')">
+                                    <i class="iconfont icon-wenzhang"></i>
+                                    <span>写文章</span>
+                                </div>
+                                <div class="b-item" @click="nav('/user/post?type=2')">
+                                    <i class="iconfont icon-icon_xinyong_xianxing_jijin-"></i>
+                                    <span>写专题</span>
+                                </div>
+                            </div>
+                            <div class="drop-block">
+                                <div class="b-item" @click="nav('/author/' + user.id)">
+                                    <i class="iconfont icon-zhuye1"></i>
+                                    <span>我的主页</span>
+                                </div>
+                                <div class="b-item" @click="nav('/setting/' + user.id)">
+                                    <i class="iconfont icon-geren"></i>
+                                    <span>资料修改</span>
+                                </div>
+                            </div>
+                            <div class="drop-block">
+                                <div class="b-item">
+                                    <i class="iconfont icon-lianjie2"></i>
+                                    <span>友情连接</span>
+                                </div>
+                                <div class="b-item">
+                                    <i class="iconfont icon-guanyu"></i>
+                                    <span>关于</span>
+                                </div>
+                            </div>
+                            <div class="drop-block">
+                                <div class="b-item" @click="toExit">
+                                    <i class="iconfont icon-tuichu"></i>
+                                    <span>退出</span>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -48,10 +90,12 @@
 import apiUser from '~/api/user'
 import { mapState } from 'vuex'
 import { mapMutations } from 'vuex'
+import event from '~/utils/event'
 export default {
     data() {
         return {
-            keyword: ''
+            keyword: '',
+            dropShow: false
         }
     },
     computed: {
@@ -59,6 +103,11 @@ export default {
     },
     methods: {
         ...mapMutations(['setUser']),
+        initEvent () {
+            event.$on('default-layout-click', e => {
+                this.dropShow = false
+            })
+        },
         doSearch() {
             this.keyword && this.$emit('do-search', this.keyword)
         },
@@ -87,6 +136,9 @@ export default {
                 this.nav('/')
             }
         }
+    },
+    mounted () {
+        this.initEvent()
     }
 }
 </script>
@@ -175,6 +227,7 @@ export default {
                     color: #007fff;
                 }
                 .d-item {
+                    position: relative;
                     display: flex;
                     align-items: center;
                     i {
@@ -189,6 +242,35 @@ export default {
                     span {
                         &:nth-child(2) {
                             padding: 0 10px;
+                        }
+                    }
+                    .i-dropdown{
+                        position: absolute;
+                        top:46px;
+                        right:0;
+                        width:150px;
+                        display: flex;
+                        flex-direction: column;
+                        background: white;
+                        box-shadow:0px 0px 10px 0px rgba(7, 53, 64, 0.35);
+                        .drop-block{
+                            padding: 10px 0;
+                            .b-item{
+                                display: flex;
+                                align-items: center;
+                                height: 32px;
+                                padding: 0 10px;
+                                span{
+                                    color:#71777c;
+                                }
+                                &:hover{
+                                    background: rgba(0, 0, 0, 0.01);
+                                    cursor: pointer;
+                                }
+                            }
+                            &:not(:last-child){
+                                border-bottom: 1px solid rgba(0,0,0,.04);
+                            }
                         }
                     }
                     &:last-child {

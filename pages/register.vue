@@ -99,11 +99,6 @@ export default {
             title: 'Kyeteo 注册',
             meta: [
                 { hid: 'description', name: 'description', content: 'Kyeteo vuejs ssr 服务端渲染 esp芯片 树莓派 登陆' }
-            ],
-            script: [
-                {
-                    src: '/js/seo.js'
-                }
             ]
         }
     },

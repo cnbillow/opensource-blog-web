@@ -12,7 +12,6 @@ module.exports = app => {
                 ctx.session.token = login.data
                 const profile = await api.profile(ctx)
                 if (profile.done) {
-                    ctx.session.user = profile.data
                     ctx.body = JSON.stringify(profile)
                 }
             }

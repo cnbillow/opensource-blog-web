@@ -97,11 +97,6 @@ export default {
             meta: [
                 // hid is used as unique identifier. Do not use `vmid` for it as it will not work
                 { hid: 'description', name: 'description', content: `Kyeteo vuejs ssr 服务端渲染 esp芯片 树莓派 ${this.info.book.title}` }
-            ],
-            script: [
-                {
-                    src: '/js/seo.js'
-                }
             ]
         }
     },

@@ -8,6 +8,9 @@ export default {
     async exit({ axios }) {
         return await axios.$post('user/exit')
     },
+    async profile({ axios }) {
+        return await axios.$post('api/user/profile')
+    },
     async doPraise({ axios, params }) {
         return await axios.$post('api/user/doPraise', params)
     },
@@ -49,5 +52,8 @@ export default {
     },
     async checkAuth({ axios, params }) {
         return await axios.$post('api/user/checkAuth', params)
+    },
+    async update({ axios, params }) {
+        return await axios.$post('api/user/update', params)
     }
 }
