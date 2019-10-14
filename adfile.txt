@@ -1,0 +1,5 @@
+index.vue
+article/_id.vue
+author/_id.vue
+book/_id.vue
+search.vue

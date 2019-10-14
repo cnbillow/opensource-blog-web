@@ -9,6 +9,9 @@
             :userHotBooks="info.userHotBooks"
         >
             <div class="m-author">
+                <div class="a-ad">
+                    <google-ad :sn="4285724595"></google-ad>
+                </div>
                 <div class="a-article">
                     <div class="a-title">
                         <span>他/她的文章</span>
@@ -111,6 +114,7 @@ import author from "~/components/author"
 import xHeader from "~/components/x-header"
 import specificRecommend from "~/components/specific-recommend"
 import xFooter from "~/components/x-footer"
+import googleAd from '~/components/google-ad'
 const marked = require("marked")
 export default {
     head() {
@@ -194,7 +198,8 @@ export default {
         author,
         xHeader,
         specificRecommend,
-        xFooter
+        xFooter,
+        googleAd
     },
     methods: {
         init() {
@@ -267,7 +272,12 @@ export default {
 <style lang="less">
 .author {
     .m-author {
+        .a-ad{
+            width:664px;
+            background: white;
+        }
         .a-article {
+            margin-top: 30px;
             background: white;
             .a-title {
                 display: flex;

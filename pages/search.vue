@@ -115,15 +115,21 @@
                 </div>
                 <x-footer></x-footer>
             </div>
+            <div class="m-right">
+                <div class="r-ad">
+                    <google-ad :sn="2042704637"></google-ad>
+                </div>
+            </div>
         </div>
     </div>
 </template>
 
 <script type="text/ecmascript-6">
-import apiArticle from "~/api/article";
-import { mapState } from "vuex";
-import xHeader from "~/components/x-header";
-import xFooter from "~/components/x-footer";
+import apiArticle from '~/api/article'
+import { mapState } from 'vuex'
+import xHeader from '~/components/x-header'
+import xFooter from '~/components/x-footer'
+import googleAd from '~/components/google-ad'
 
 export default {
     head() {
@@ -171,7 +177,8 @@ export default {
     },
     components: {
         xHeader,
-        xFooter
+        xFooter,
+        googleAd
     },
     methods: {
         doSearch() {
@@ -552,6 +559,14 @@ export default {
                         }
                     }
                 }
+            }
+        }
+        .m-right{
+            flex:1;
+            margin-left: 20px;
+            .r-ad{
+                width:100%;
+                background: white;
             }
         }
     }

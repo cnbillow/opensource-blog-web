@@ -127,6 +127,9 @@
 						</div>
 					</div>
 				</div>
+				<div class="r-section r-section-ad">
+					<google-ad :sn="6831996883"></google-ad>
+				</div>
 				<div class="r-section r-section-login">
 					<div class="l-title">
 						<span>KYETEO - kyeteo.cn</span>
@@ -209,11 +212,11 @@
 </template>
 
 <script>
-    import apiArticle from '~/api/article'
     import {mapState, mapMutations, mapActions} from 'vuex'
     import xHeader from '~/components/x-header'
     import xFooter from "~/components/x-footer"
-    import toTop from "~/components/to-top"
+    import toTop from '~/components/to-top'
+	import googleAd from '~/components/google-ad'
 
     export default {
         head() {
@@ -243,7 +246,8 @@
         components: {
             xHeader,
             xFooter,
-            toTop
+            toTop,
+			googleAd
         },
         methods: {
             ...mapMutations('page', ['clearHomeArticle', 'changeHomeArticleType', 'changeHomeArticleSort']),
@@ -271,7 +275,7 @@
 <style lang="less">
 	.index {
 		background: #f4f5f5;
-		
+
 		.i-tab {
 			position: fixed;
 			top: 61px;
@@ -280,32 +284,32 @@
 			z-index: 999;
 			background: white;
 			box-shadow: 0px 0px 10px 0px rgba(2, 2, 2, 0.2);
-			
+
 			.t-wrap {
 				display: flex;
 				width: 960px;
 				height: 46px;
 				margin: 0 auto;
-				
+
 				.w-item {
 					display: flex;
 					align-items: center;
 					padding-right: 10px;
-					
+
 					span {
 						font-size: 14px;
 					}
-					
+
 					&:not(:first-child) {
 						padding-left: 10px;
 					}
-					
+
 					&-active {
 						span {
 							color: #007fff;
 						}
 					}
-					
+
 					&:hover {
 						cursor: pointer;
 						color: #007fff;
@@ -313,19 +317,19 @@
 				}
 			}
 		}
-		
+
 		.i-main {
 			display: flex;
 			width: 960px;
 			padding: 126px 0 30px 0;
 			margin: 0 auto;
-			
+
 			.m-left {
 				width: 700px;
-				
+
 				.l-articles {
 					background: white;
-					
+
 					.a-tab {
 						display: flex;
 						align-items: center;
@@ -333,22 +337,22 @@
 						box-sizing: border-box;
 						padding: 0 20px;
 						border-bottom: 1px solid hsla(0, 0%, 59.2%, 0.1);
-						
+
 						.t-item {
 							span {
 								font-size: 14px;
 							}
-							
+
 							&-active {
 								span {
 									color: #007fff;
 								}
 							}
-							
+
 							&:not(:first-child) {
 								position: relative;
 								margin-left: 30px;
-								
+
 								&:before {
 									position: absolute;
 									content: "";
@@ -360,36 +364,36 @@
 									background: hsla(0, 0%, 59.2%, 0.2);
 								}
 							}
-							
+
 							&:hover {
 								cursor: pointer;
 								color: #007fff;
 							}
 						}
 					}
-					
+
 					.a-list {
 						.l-item {
 							position: relative;
 							padding: 15px 100px 15px 20px;
 							list-style: none;
-							
+
 							.i-info {
 								display: flex;
 								align-items: center;
-								
+
 								span {
 									position: relative;
 									font-size: 14px;
-									
+
 									&:nth-child(1) {
 										color: #007fff;
 									}
-									
+
 									&:not(:first-child) {
 										padding-left: 20px;
 										color: #b2bac2;
-										
+
 										&::before {
 											position: absolute;
 											content: "/";
@@ -400,46 +404,47 @@
 									}
 								}
 							}
-							
+
 							.i-name {
 								display: flex;
 								align-items: center;
 								padding: 10px 0 15px 0;
-								
+
 								span {
 									font-size: 16px;
 									font-weight: 600;
 									color: #333;
 								}
 							}
-							
+
 							.i-do {
 								display: flex;
 								align-items: center;
-								
+
 								.d-btns {
 									display: flex;
 									align-items: center;
 									border: 1px solid #f4f5f5;
-									
+
 									.b-item {
 										display: flex;
 										align-items: center;
 										justify-content: center;
 										width: 55px;
-										height: 24px;
-										
+                                        height: 24px;
+                                        color:#515a6e;
+
 										i {
 											font-size: 16px;
 										}
-										
+
 										&:last-child {
 											border-left: 1px solid #f4f5f5;
 										}
 									}
 								}
 							}
-							
+
 							.i-cover {
 								position: absolute;
 								top: 50%;
@@ -449,11 +454,11 @@
 								height: 70px;
 								background-size: auto 100%;
 							}
-							
+
 							&:hover {
 								cursor: pointer;
 								background-color: rgba(0, 0, 0, 0.01);
-								
+
 								.i-name {
 									text-decoration: underline;
 									text-decoration-color: #333;
@@ -461,17 +466,17 @@
 							}
 						}
 					}
-					
+
 					.a-more {
 						padding: 30px;
-						
+
 						.m-wrap {
 							display: flex;
 							align-items: center;
 							justify-content: center;
 							height: 30px;
 							background: #f4f5f6;
-							
+
 							&:hover {
 								cursor: pointer;
 							}
@@ -479,15 +484,15 @@
 					}
 				}
 			}
-			
+
 			.m-right {
 				flex: 1;
 				margin-left: 20px;
-				
+
 				.r-section {
 					padding: 20px;
 					background: white;
-					
+
 					&-mp {
 						.m-title {
 							span {
@@ -496,10 +501,10 @@
 								color: #2e3135;
 							}
 						}
-						
+
 						.m-desc {
 							padding-top: 10px;
-							
+
 							.d-item {
 								span {
 									font-size: 12px;
@@ -507,21 +512,21 @@
 								}
 							}
 						}
-						
+
 						.m-qr {
 							display: flex;
 							justify-content: center;
 							padding-top: 10px;
-							
+
 							img {
 								width: 200px;
 								height: 200px;
 							}
 						}
-						
+
 						.m-third {
 							padding-top: 10px;
-							
+
 							.t-title {
 								span {
 									font-size: 14px;
@@ -529,21 +534,21 @@
 									color: #2e3135;
 								}
 							}
-							
+
 							.t-entry {
 								display: flex;
 								align-items: center;
 								padding-top: 10px;
-								
+
 								.e-item {
 									width: 25px;
 									height: 25px;
-									
+
 									img {
 										width: 100%;
 										height: 100%;
 									}
-									
+
 									&:not(:first-child) {
 										margin-left: 20px;
 									}
@@ -551,10 +556,14 @@
 							}
 						}
 					}
-					
+
+					&-ad{
+						padding: 0;
+						margin-top: 30px;
+					}
 					&-login {
 						margin-top: 30px;
-						
+
 						.l-title {
 							span {
 								font-size: 14px;
@@ -562,17 +571,17 @@
 								color: #2e3135;
 							}
 						}
-						
+
 						.l-desc {
 							span {
 								font-size: 14px;
 								color: #8f969c;
 							}
 						}
-						
+
 						.l-form {
 							padding: 10px 0;
-							
+
 							.f-item {
 								display: flex;
 								align-items: center;
@@ -582,17 +591,17 @@
 								border: 1px solid hsla(0, 0%, 59.2%, 0.2);
 								border-radius: 3px;
 								background: rgba(227, 231, 236, 0.2);
-								
+
 								&:not(:first-child) {
 									margin-top: 10px;
 								}
-								
+
 								&:hover {
 									cursor: text;
 								}
 							}
 						}
-						
+
 						.l-btn {
 							display: flex;
 							align-items: center;
@@ -601,30 +610,30 @@
 							box-sizing: border-box;
 							border-radius: 3px;
 							background: #007fff;
-							
+
 							span {
 								color: white;
 							}
-							
+
 							&:hover {
 								cursor: pointer;
 							}
 						}
-						
+
 						.l-third {
 							display: flex;
 							align-items: center;
 							padding-top: 10px;
-							
+
 							.t-left {
 								flex-grow: 0;
 							}
-							
+
 							.t-right {
 								display: flex;
 								align-items: center;
 								flex: 1;
-								
+
 								.r-item {
 									&:not(:first-child) {
 										margin-left: 10px;
@@ -633,12 +642,12 @@
 							}
 						}
 					}
-					
+
 					&-tag {
 						margin-top: 30px;
 						padding: 0;
 						font-size: 14px;
-						
+
 						.t-title {
 							display: flex;
 							align-items: center;
@@ -646,19 +655,19 @@
 							height: 45px;
 							padding: 20px;
 							border-bottom: 1px solid hsla(0, 0%, 59.2%, 0.1);
-							
+
 							span {
 								&:last-child {
 									color: #007fff;
 								}
 							}
 						}
-						
+
 						.t-content {
 							display: flex;
 							flex-wrap: wrap;
 							padding: 20px;
-							
+
 							.c-item {
 								display: flex;
 								align-items: center;
@@ -668,7 +677,7 @@
 								border-radius: 15px;
 								background: #f3f6f3;
 								color: #515a6e;
-								
+
 								&:hover {
 									cursor: pointer;
 									background: #007fff;
@@ -677,12 +686,12 @@
 							}
 						}
 					}
-					
+
 					&-book {
 						margin-top: 30px;
 						padding: 0;
 						font-size: 14px;
-						
+
 						.b-title {
 							display: flex;
 							align-items: center;
@@ -691,36 +700,36 @@
 							padding: 20px;
 							border-bottom: 1px solid hsla(0, 0%, 59.2%, 0.1);
 						}
-						
+
 						.b-content {
 							.c-item {
 								a {
 									display: flex;
 									padding: 20px 10px;
-									
+
 									.i-cover {
 										flex-basis: 52px;
 										height: 72px;
-										
+
 										img {
 											width: 100%;
 											height: 100%;
 										}
 									}
-									
+
 									.i-text {
 										padding-left: 10px;
-										
+
 										.t-name {
 											span {
 												font-size: 14px;
 											}
 										}
-										
+
 										.t-author {
 											display: flex;
 											align-items: center;
-											
+
 											span {
 												position: relative;
 												color: #fc4544;
@@ -728,7 +737,7 @@
 										}
 									}
 								}
-								
+
 								&:hover {
 									cursor: pointer;
 									background-color: rgba(0, 0, 0, 0.01);

@@ -45,6 +45,9 @@
                     </div>
                 </div>
             </div>
+            <div class="m-ad">
+                <google-ad :sn="7866216269"></google-ad>
+            </div>
             <div class="m-article">
                 <div class="a-header">
                     <div class="h-title">
@@ -266,6 +269,9 @@
                         </div>
                     </div>
                 </div>
+                <div class="s-right s-right-ad">
+                    <google-ad :sn="5240052921"></google-ad>
+                </div>
                 <div class="s-right s-right-link" v-if="articleCategory.length">
                     <div class="r-title">
                         <i class="iconfont icon-youqingtishi"></i>
@@ -300,6 +306,7 @@ import specificRecommend from "~/components/specific-recommend"
 import xHeader from "~/components/x-header"
 import xFooter from "~/components/x-footer"
 import markdownPreview from "~/components/markdown-preview"
+import googleAd from '~/components/google-ad'
 export default {
     head() {
         return {
@@ -375,7 +382,8 @@ export default {
         author,
         xHeader,
         specificRecommend,
-        markdownPreview
+        markdownPreview,
+        googleAd
     },
     methods: {
         ...mapMutations("page", ["UPDATE_ARTICLE_PRAISE_COUNT"]),
@@ -579,6 +587,11 @@ export default {
                 }
             }
         }
+    }
+    .m-ad{
+        width:664px;
+        margin-bottom: 30px;
+        background: white;
     }
     .m-article {
         background: white;
@@ -1055,6 +1068,9 @@ export default {
                     background: #eee;
                 }
             }
+        }
+        &-ad{
+            margin-top: 30px;
         }
         &-link {
             margin-top: 30px;
