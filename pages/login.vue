@@ -26,10 +26,12 @@
                         <span>第三方登陆</span>
                     </div>
                     <div class="l-icon">
-                        <i class="iconfont icon-weixin"></i>
+                        <Tooltip content="尚未接入微信登录，给您带来不便，深表歉意。" placement="bottom">
+                            <i class="iconfont icon-weixin"></i>
+                        </Tooltip>
                     </div>
                 </div>
-                <div class="b-right">
+                <div class="b-right" @click="nav('/register')">
                     <span>立即注册</span>
                 </div>
             </div>
@@ -47,11 +49,6 @@ export default {
             title: 'Kyeteo 登陆',
             meta: [
                 { hid: 'description', name: 'description', content: 'Kyeteo vuejs ssr 服务端渲染 esp芯片 树莓派 登陆' }
-            ],
-            script: [
-                {
-                    src: '/js/seo.js'
-                }
             ]
         }
     },
@@ -85,10 +82,11 @@ export default {
                                     }
                                 }, '登陆成功')
                             ])
-                    },
-                    duration: 3000
+                    }
                 })
                 this.nav('/')
+            } else {
+                this.$Message.error('登录失败')
             }
         }
     }
@@ -197,6 +195,9 @@ export default {
                         text-align: center;
                         line-height: 20px;
                         color: #00a7eb;
+                    }
+                    &:hover {
+                        cursor: pointer;
                     }
                 }
             }

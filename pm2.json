@@ -1,0 +1,20 @@
+{
+    "apps": [
+        {
+            "name": "kyeteo-blog", 
+            "script": "server/index.js",
+            "out_file": "日志目录/logs/nuxt_out.log",
+            "error_file": "日志目录/logs/nuxt_error.log",
+            "cwd": "nuxt项目在服务器中的根目录位置",
+            "max_memory_restart": "200M",
+            "autorestart": true,
+            "node_args": [],
+            "args": [],
+            "instances": 4,
+            "exec_mode": "cluster",
+            "env": {
+                "NODE_ENV": "production"
+            }
+        }
+    ]
+}

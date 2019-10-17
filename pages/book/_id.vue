@@ -79,6 +79,11 @@
             </div>
             <specific-recommend :recommend="recommend" @do-get="getRecommend"></specific-recommend>
             <x-footer></x-footer>
+            <template slot="right">
+                <div class="s-right s-right-ad">
+                    <google-ad :sn="7841826223"></google-ad>
+                </div>
+            </template>
         </author>
     </div>
 </template>
@@ -90,6 +95,7 @@ import author from '~/components/author'
 import xHeader from '~/components/x-header'
 import specificRecommend from '~/components/specific-recommend'
 import xFooter from "~/components/x-footer"
+import googleAd from '~/components/google-ad'
 export default {
     head() {
         return {
@@ -97,11 +103,6 @@ export default {
             meta: [
                 // hid is used as unique identifier. Do not use `vmid` for it as it will not work
                 { hid: 'description', name: 'description', content: `Kyeteo vuejs ssr 服务端渲染 esp芯片 树莓派 ${this.info.book.title}` }
-            ],
-            script: [
-                {
-                    src: '/js/seo.js'
-                }
             ]
         }
     },
@@ -130,7 +131,8 @@ export default {
         author,
         xHeader,
         specificRecommend,
-        xFooter
+        xFooter,
+        googleAd
     },
     methods: {
         noTip() {
@@ -443,6 +445,9 @@ export default {
         &:not(:first-child) {
             margin-top: 20px;
         }
+    }
+    .s-right {
+        background: white;
     }
 }
 </style>

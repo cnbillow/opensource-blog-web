@@ -3,7 +3,7 @@
         <header class="r-header">
             <div class="h-wrap">
                 <div class="w-left">
-                    <h1 class="border-1px-right">kyeteo</h1>
+                    <h1 class="border-1px-right" @click="rep('/')">kyeteo</h1>
                     <span>注册账号</span>
                 </div>
                 <div class="w-right">
@@ -63,7 +63,7 @@
                                 <span>邀请码</span>
                             </div>
                             <div class="i-right">
-                                <input type="text" />
+                                <input type="text" placeholder="没有邀请码可不填"/>
                                 <Tooltip placement="top">
                                     <a>没有邀请码？</a>
                                     <div slot="content">
@@ -99,11 +99,6 @@ export default {
             title: 'Kyeteo 注册',
             meta: [
                 { hid: 'description', name: 'description', content: 'Kyeteo vuejs ssr 服务端渲染 esp芯片 树莓派 登陆' }
-            ],
-            script: [
-                {
-                    src: '/js/seo.js'
-                }
             ]
         }
     },
@@ -167,6 +162,9 @@ export default {
                 align-items: center;
                 h1 {
                     padding-right: 10px;
+                    &:hover{
+                        cursor: pointer;
+                    }
                 }
                 span {
                     padding-left: 10px;

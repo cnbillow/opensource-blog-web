@@ -1,3 +1,5 @@
+import apiUser from '~/api/user'
+
 export const state = () => ({
     app: {
         tipVisible: true
@@ -14,9 +16,19 @@ export const mutations = {
     }
 }
 export const actions = {
-    nuxtServerInit({ commit }, { req }) {
-        if (req.session.user) {
-            commit('setUser', req.session.user)
+    async nuxtServerInit({ dispatch }, {req, $axios}) {
+        if (req.session.token) {
+            await dispatch('getUserInfo', {axios: $axios})
         }
+    },
+    getUserInfo({commit}, {axios}) {
+        return new Promise((resolve) => {
+            apiUser.profile({axios}).then(res => {
+                if (res.done) {
+                    commit('setUser', res.data)
+                    resolve()
+                }
+            })
+        })
     }
 }

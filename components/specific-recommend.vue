@@ -57,8 +57,8 @@
             </div>
         </div>
         <div class="r-more">
-            <div class="m-wrap">
-                <span v-if="recommend.more" @click="doGet">查看更多文章</span>
+            <div class="m-wrap" @click="doGet">
+                <span v-if="recommend.more">查看更多文章</span>
                 <span v-else>暂无更多文章</span>
             </div>
         </div>

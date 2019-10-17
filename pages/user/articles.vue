@@ -62,11 +62,6 @@ export default {
             title: 'Kyeteo 文章管理',
             meta: [
                 { hid: 'description', name: 'description', content: 'Kyeteo vuejs ssr 服务端渲染 esp芯片 树莓派 文章管理' }
-            ],
-            script: [
-                {
-                    src: '/js/seo.js'
-                }
             ]
         }
     },

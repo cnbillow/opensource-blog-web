@@ -107,33 +107,39 @@
                         </div>
                     </div>
                     <div class="a-more">
-                        <div class="m-wrap">
-                            <span v-if="article.more" @click="doSearch">查看更多文章</span>
+                        <div class="m-wrap" @click="doSearch">
+                            <span v-if="article.more">查看更多文章</span>
                             <span v-else>暂无更多文章</span>
                         </div>
                     </div>
                 </div>
                 <x-footer></x-footer>
             </div>
+            <div class="m-right">
+                <div class="r-ad">
+                    <google-ad :sn="2042704637"></google-ad>
+                </div>
+            </div>
         </div>
     </div>
 </template>
 
 <script type="text/ecmascript-6">
-import apiArticle from "~/api/article";
-import { mapState } from "vuex";
-import xHeader from "~/components/x-header";
-import xFooter from "~/components/x-footer";
+import apiArticle from '~/api/article'
+import { mapState } from 'vuex'
+import xHeader from '~/components/x-header'
+import xFooter from '~/components/x-footer'
+import googleAd from '~/components/google-ad'
 
 export default {
     head() {
         return {
-            title: `Kyeteo 搜索标签 ${this.info.tag.name}`,
+            title: this.$route.query.keyword ? `Kyeteo 搜索关键字 ${this.$route.query.keyword}` : `Kyeteo 搜索标签 ${this.info.tag.name}`,
             meta: [
                 {
                     hid: "description",
                     name: "description",
-                    content: `Kyeteo vuejs ssr 服务端渲染 esp芯片 树莓派 ${this.info.tag.name}`
+                    content: this.$route.query.keyword ? 'Kyeteo vuejs ssr 服务端渲染 esp芯片 树莓派' : `Kyeteo vuejs ssr 服务端渲染 esp芯片 树莓派 ${this.info.tag.name}`
                 }
             ],
             script: [
@@ -171,7 +177,8 @@ export default {
     },
     components: {
         xHeader,
-        xFooter
+        xFooter,
+        googleAd
     },
     methods: {
         doSearch() {
@@ -552,6 +559,14 @@ export default {
                         }
                     }
                 }
+            }
+        }
+        .m-right{
+            flex:1;
+            margin-left: 20px;
+            .r-ad{
+                width:100%;
+                background: white;
             }
         }
     }
