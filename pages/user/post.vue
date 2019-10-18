@@ -387,19 +387,7 @@ export default {
     layout: "auth",
     head() {
         return {
-            title: "Kyeteo 写文章",
-            meta: [
-                {
-                    hid: "description",
-                    name: "description",
-                    content: "Kyeteo vuejs ssr 服务端渲染 esp芯片 树莓派 写文章"
-                }
-            ],
-            script: [
-                {
-                    src: "/js/seo.js"
-                }
-            ]
+            title: "写文章 -kyeteo"
         }
     },
     data() {

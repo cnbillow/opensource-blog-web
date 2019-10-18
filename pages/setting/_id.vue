@@ -140,9 +140,18 @@
         layout: "auth",
         head() {
             return {
-                title: 'Kyeteo 个人资料修改',
+                title: '个人资料修改',
                 meta: [
-                    {hid: 'description', name: 'description', content: 'Kyeteo vuejs ssr 服务端渲染 esp芯片 树莓派'}
+                {
+                    hid: "keywords",
+                    name: "keywords",
+                    content: `个人资料修改 -${this.user.nickname}`
+                },
+                {
+                    hid: "description",
+                    name: "description",
+                    content: `个人资料修改 -${this.user.nickname}`
+                }
                 ]
             }
         },

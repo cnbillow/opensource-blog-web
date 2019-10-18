@@ -50,10 +50,7 @@
 									<span v-if="item.tag.length">{{item.tag[0].name}}</span>
 								</div>
 								<div class="i-name">
-                                    <span
-											v-if="item.section.length && item.section[0].book"
-									>《{{item.section[0].book.title}}》</span>
-									<span>{{item.title}}</span>
+									<a :href="'/article/' + item.id" target="_blank">{{item.title}}</a>
 								</div>
 								<div class="i-do">
 									<div class="d-btns">
@@ -173,9 +170,7 @@
 								:href="'/search?tagId=' + item.id"
 								:key="key"
 								v-for="(item, key) in home.tag"
-						>
-							<span>{{item.name}}</span>
-						</a>
+						>{{item.name}}</a>
 					</div>
 				</div>
 				<div class="r-section r-section-book">
@@ -196,7 +191,7 @@
 								</div>
 								<div class="i-text">
 									<div class="t-name">
-										<span>{{item.title}}</span>
+										<a :href="'/book/' + item.id">{{item.title}}</a>
 									</div>
 									<div class="t-author">
 										<span>{{item.user.nickname}}</span>
@@ -221,10 +216,7 @@
     export default {
         head() {
             return {
-                title: 'Kyeteo 一个分享知识的地方',
-                meta: [
-                    {hid: 'description', name: 'description', content: 'Kyeteo vuejs ssr 服务端渲染 esp芯片 树莓派'}
-                ]
+                title: 'Kyeteo 一个分享知识的地方'
             }
         },
         async fetch({$axios, store, params}) {
@@ -410,7 +402,7 @@
 								align-items: center;
 								padding: 10px 0 15px 0;
 
-								span {
+								a {
 									font-size: 16px;
 									font-weight: 600;
 									color: #333;
@@ -721,7 +713,7 @@
 										padding-left: 10px;
 
 										.t-name {
-											span {
+											a {
 												font-size: 14px;
 											}
 										}

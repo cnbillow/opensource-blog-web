@@ -1,5 +1,6 @@
 import apiPage from '~/api/page'
 import apiArticle from '~/api/article'
+const marked = require("marked")
 
 export const state = () => ({
     home: {
@@ -61,6 +62,29 @@ export const state = () => ({
 })
 
 export const getters = {
+    mdText: state => {
+        if (!state.article.article.text) {
+            return ''
+        }
+        const mdHtml = marked(state.article.article.text, {
+            sanitize: false
+        });
+        let text = ""
+        try {
+            text = mdHtml
+                .match(/<\S+>(.*)<\S+>/g)
+                .map(i => {
+                    return i.match(/<\S+>(.*)<\S+>/)[1];
+                })
+                .join("")
+        } finally {
+            text = text.substring(0, 100)
+            if (text.length === 100) {
+                text = text + "..."
+            }
+        }
+        return text
+    },
     articleCategory: state => {
         if (!state.article.article.text) {
             return []

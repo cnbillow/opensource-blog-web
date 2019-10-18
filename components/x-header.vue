@@ -2,18 +2,19 @@
     <div class="x-header">
         <div class="h-wrap">
             <div class="w-left">
-                <div class="l-logo">
-                    <h1>Kyeteo</h1>
-                </div>
-                <div class="l-module">
-                    <div
-                        class="m-item"
-                        @click="rep('/')"
-                        :class="{'m-item-active': $route.path === '/'}"
-                    >
-                        <span>首页</span>
+                <a href="/">
+                    <div class="l-logo">
+                        <h1>Kyeteo</h1>
                     </div>
-                </div>
+                    <div class="l-module">
+                        <div
+                            class="m-item"
+                            :class="{'m-item-active': $route.path === '/'}"
+                        >
+                            <span>首页</span>
+                        </div>
+                    </div>
+                </a>
             </div>
             <div class="w-right">
                 <div class="r-search">
@@ -160,34 +161,37 @@ export default {
         height: 60px;
         margin: 0 auto;
         .w-left {
-            display: flex;
-            .l-logo {
+            a{
                 display: flex;
-                align-items: center;
-                h1 {
-                    color: #007fff;
-                }
-                &:hover {
-                    cursor: pointer;
-                }
-            }
-            .l-module {
-                display: flex;
-                .m-item {
+                height: 100%;
+                .l-logo {
                     display: flex;
                     align-items: center;
-                    padding: 0 20px;
-                    span {
-                        font-size: 16px;
-                    }
-                    &-active {
-                        span {
-                            font-size: 16px;
-                            color: #007fff;
-                        }
+                    h1 {
+                        color: #007fff;
                     }
                     &:hover {
                         cursor: pointer;
+                    }
+                }
+                .l-module {
+                    display: flex;
+                    .m-item {
+                        display: flex;
+                        align-items: center;
+                        padding: 0 20px;
+                        span {
+                            font-size: 16px;
+                        }
+                        &-active {
+                            span {
+                                font-size: 16px;
+                                color: #007fff;
+                            }
+                        }
+                        &:hover {
+                            cursor: pointer;
+                        }
                     }
                 }
             }

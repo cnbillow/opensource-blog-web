@@ -46,9 +46,18 @@ export default {
     layout: 'auth',
     head() {
         return {
-            title: 'Kyeteo 登陆',
+            title: '登陆 -kyeteo',
             meta: [
-                { hid: 'description', name: 'description', content: 'Kyeteo vuejs ssr 服务端渲染 esp芯片 树莓派 登陆' }
+                {
+                    hid: "keywords",
+                    name: "keywords",
+                    content: '登陆 -kyeteo'
+                },
+                {
+                    hid: "description",
+                    name: "description",
+                    content: '登陆 -kyeteo'
+                }
             ]
         }
     },

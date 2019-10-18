@@ -99,10 +99,18 @@ import googleAd from '~/components/google-ad'
 export default {
     head() {
         return {
-            title: `Kyeteo — ${this.info.book.title}`,
+            title: `${this.info.book.title}`,
             meta: [
-                // hid is used as unique identifier. Do not use `vmid` for it as it will not work
-                { hid: 'description', name: 'description', content: `Kyeteo vuejs ssr 服务端渲染 esp芯片 树莓派 ${this.info.book.title}` }
+                {
+                    hid: "keywords",
+                    name: "keywords",
+                    content: `${this.info.book.title}`
+                },
+                {
+                    hid: "description",
+                    name: "description",
+                    content: `${this.info.book.desc}`
+                }
             ]
         }
     },

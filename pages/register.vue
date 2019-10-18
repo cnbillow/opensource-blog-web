@@ -96,9 +96,18 @@ import validateForm from '~/components/validate-form'
 export default {
     head() {
         return {
-            title: 'Kyeteo 注册',
+            title: '注册 -kyeteo',
             meta: [
-                { hid: 'description', name: 'description', content: 'Kyeteo vuejs ssr 服务端渲染 esp芯片 树莓派 登陆' }
+                {
+                    hid: "keywords",
+                    name: "keywords",
+                    content: '注册 -kyeteo'
+                },
+                {
+                    hid: "description",
+                    name: "description",
+                    content: '注册 -kyeteo'
+                }
             ]
         }
     },

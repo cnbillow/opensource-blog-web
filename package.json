@@ -1,7 +1,7 @@
 {
-  "name": "kyeteo-blog",
+  "name": "kyeteo",
   "version": "1.0.0",
-  "description": "kyeteo开源博客是基于vuejs(vue cli3创建) + thinkphp5前后端分离的完整项目",
+  "description": "kyeteo 一个分享前沿编程技术的地方，在这里，你能够获取最新的前端，后端发展趋势，同时你能够获取到如日中天的嵌入式，人工智能的学习知识",
   "author": "kyeteo",
   "private": true,
   "scripts": {

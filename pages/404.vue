@@ -21,10 +21,7 @@
     export default {
         head() {
             return {
-                title: 'Kyeteo 服务器发生未知错误/(ㄒoㄒ)/~~',
-                meta: [
-                    {hid: 'description', name: 'description', content: 'Kyeteo vuejs ssr 服务端渲染 esp芯片 树莓派'}
-                ]
+                title: '404 找不到页面 -kyeteo'
             }
         },
         components: {

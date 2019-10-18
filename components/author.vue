@@ -91,49 +91,49 @@
                                     :key="key"
                                     v-for="(item, key) in userHotArticles"
                                 >
-                                    <div class="i-name">
-                                        <span
-                                            v-if="item.section.length && item.section[0].book"
-                                        >《{{item.section[0].book.title}}》</span>
-                                        <span>{{item.title}}</span>
-                                    </div>
-                                    <div class="i-stati">
-                                        <div class="s-item">
-                                            <i class="iconfont icon-like"></i>
-                                            <span>{{item.praise_count}}</span>
+                                    <a :href="'/article/' + item.id">
+                                        <div class="i-name">
+                                            <a :href="'/article/' + item.id">{{item.title}}</a>
                                         </div>
-                                        <div class="s-item">
-                                            <i class="iconfont icon-pinglun"></i>
-                                            <span>{{item.comment_count}}</span>
+                                        <div class="i-stati">
+                                            <div class="s-item">
+                                                <i class="iconfont icon-like"></i>
+                                                <span>{{item.praise_count}}</span>
+                                            </div>
+                                            <div class="s-item">
+                                                <i class="iconfont icon-pinglun"></i>
+                                                <span>{{item.comment_count}}</span>
+                                            </div>
                                         </div>
-                                    </div>
-                                    <div class="i-icon">
-                                        <i
-                                            class="iconfont"
-                                            :class="{'icon-first': key === 0, 'icon-second': key === 1, 'icon-third': key === 2}"
-                                            v-if="key < 3"
-                                        ></i>
-                                    </div>
+                                        <div class="i-icon">
+                                            <i
+                                                class="iconfont"
+                                                :class="{'icon-first': key === 0, 'icon-second': key === 1, 'icon-third': key === 2}"
+                                                v-if="key < 3"
+                                            ></i>
+                                        </div>
+                                    </a>
                                 </div>
                             </div>
                             <div class="w-list w-list-book" v-else>
                                 <div
                                     class="b-item"
                                     :key="key"
-                                    @click="nav('/book/' + item.id)"
                                     v-for="(item, key) in userHotBooks"
                                 >
-                                    <div class="i-cover">
-                                        <img :src="item.cover | imgCover" alt />
-                                    </div>
-                                    <div class="i-text">
-                                        <div class="t-name">
-                                            <span>{{item.title}}</span>
+                                    <a :href="'/book/' + item.id">
+                                        <div class="i-cover">
+                                            <img :src="item.cover | imgCover" alt />
                                         </div>
-                                        <div class="t-author">
-                                            <span>{{item.user.nickname}}</span>
+                                        <div class="i-text">
+                                            <div class="t-name">
+                                                <a :href="'/book/' + item.id">{{item.title}}</a>
+                                            </div>
+                                            <div class="t-author">
+                                                <span>{{item.user.nickname}}</span>
+                                            </div>
                                         </div>
-                                    </div>
+                                    </a>
                                 </div>
                             </div>
                         </div>
@@ -159,15 +159,14 @@
                                     @click="nav('/article/' + item.id)"
                                     v-for="(item, key) in mostViewArticles"
                                 >
-                                    <div class="i-cover">
-                                        <img :src="item.cover | imgCover" alt />
-                                    </div>
-                                    <div class="i-text">
-                                        <span
-                                            v-if="item.section.length && item.section[0].book"
-                                        >《{{item.section[0].book.title}}》</span>
-                                        <span>{{item.title}}</span>
-                                    </div>
+                                    <a :href="'/article/' + item.id">
+                                        <div class="i-cover">
+                                            <img :src="item.cover | imgCover" alt />
+                                        </div>
+                                        <div class="i-text">
+                                            <a :href="'/article/' + item.id">{{item.title}}</a>
+                                        </div>
+                                    </a>
                                 </div>
                             </div>
                         </div>
@@ -460,13 +459,14 @@ export default {
                                         display: flex;
                                         align-items: center;
                                         width: 150px;
-                                        span {
+                                        a {
                                             display: inline-block;
                                             width: 100%;
                                             white-space: nowrap;
                                             overflow: hidden;
                                             text-overflow: ellipsis;
                                             font-size: 14px;
+                                            color:#515a6e;
                                         }
                                     }
                                     .i-stati {
@@ -488,6 +488,7 @@ export default {
                                         right: 16px;
                                         i {
                                             font-size: 20px;
+                                            color:#515a6e;
                                         }
                                     }
                                     &:hover {
@@ -498,29 +499,33 @@ export default {
                             }
                             &-book {
                                 .b-item {
+                                    a{
                                     display: flex;
                                     padding: 20px 10px;
-                                    .i-cover {
-                                        flex-basis: 52px;
-                                        height: 72px;
-                                        img {
-                                            width: 100%;
-                                            height: 100%;
-                                        }
-                                    }
-                                    .i-text {
-                                        padding-left: 10px;
-                                        .t-name {
-                                            span {
-                                                font-size: 14px;
+                                        .i-cover {
+                                            flex-basis: 52px;
+                                            height: 72px;
+                                            img {
+                                                width: 100%;
+                                                height: 100%;
                                             }
                                         }
-                                        .t-author {
-                                            display: flex;
-                                            align-items: center;
-                                            span {
-                                                position: relative;
-                                                color: #fc4544;
+                                        .i-text {
+                                            padding-left: 10px;
+                                            .t-name {
+                                                a {
+                                                    padding: 0;
+                                                    font-size: 14px;
+                                                    color:#515a6e;
+                                                }
+                                            }
+                                            .t-author {
+                                                display: flex;
+                                                align-items: center;
+                                                span {
+                                                    position: relative;
+                                                    color: #fc4544;
+                                                }
                                             }
                                         }
                                     }
@@ -570,24 +575,27 @@ export default {
                         &-most {
                             .s-list {
                                 .l-item {
+                                    a{
                                     display: flex;
                                     align-items: center;
-                                    .i-cover {
-                                        flex-basis: 48px;
-                                        height: 48px;
-                                        img {
-                                            width: 100%;
-                                            height: 100%;
+                                        .i-cover {
+                                            flex-basis: 48px;
+                                            height: 48px;
+                                            img {
+                                                width: 100%;
+                                                height: 100%;
+                                            }
                                         }
-                                    }
-                                    .i-text {
-                                        flex: 1;
-                                        align-items: center;
-                                        padding-left: 10px;
-                                        span {
-                                            margin: 0;
-                                            line-height: 20px;
-                                            font-size: 14px;
+                                        .i-text {
+                                            flex: 1;
+                                            align-items: center;
+                                            padding-left: 10px;
+                                            a {
+                                                margin: 0;
+                                                line-height: 20px;
+                                                font-size: 14px;
+                                                color:#515a6e;
+                                            }
                                         }
                                     }
                                     &:not(:first-child) {

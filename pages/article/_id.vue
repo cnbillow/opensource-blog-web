@@ -68,7 +68,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="a-content">
+                <div class="a-content" style="width:664px;">
                     <markdown-preview :md="info.article.text"></markdown-preview>
                 </div>
                 <div class="a-footer">
@@ -281,7 +281,7 @@
                         <div class="c-item" :key="key" v-for="(item, key) in info.link">
                             <a :href="item.url" target="_blank">
                                 <div class="i-left">
-                                    <span>{{item.name}}</span>
+                                     <a :href="item.url" target="_blank">{{item.name}}</a>
                                 </div>
                                 <div class="i-right">
                                     <span>前往</span>
@@ -310,19 +310,20 @@ import googleAd from '~/components/google-ad'
 export default {
     head() {
         return {
-            title: `Kyeteo — ${this.info.article.title}`,
+            title: `${this.info.article.title}`,
             meta: [
-                // hid is used as unique identifier. Do not use `vmid` for it as it will not work
+                {
+                    hid: "keywords",
+                    name: "keywords",
+                    content: `${this.info.article.title}`
+                },
                 {
                     hid: "description",
                     name: "description",
-                    content: `Kyeteo vuejs ssr 服务端渲染 esp芯片 树莓派 ${this.info.article.title}`
+                    content: `${this.mdText}`
                 }
             ],
             script: [
-                {
-                    src: "/js/seo.js"
-                },
                 {
                     src: "/js/qrcode.min.js"
                 }
@@ -363,7 +364,7 @@ export default {
         ...mapState("page", {
             info: "article"
         }),
-        ...mapGetters("page", ["articleCategory"]),
+        ...mapGetters("page", ['mdText', 'articleCategory']),
         section() {
             if (!this.info.article.section.length) {
                 return {}
@@ -1085,9 +1086,11 @@ export default {
                         justify-content: space-between;
                         height: 50px;
                         .i-left {
-                            font-size: 14px;
-                            color: #333;
-                            font-weight: 600;
+                            a{
+                                font-size: 14px;
+                                color: #333;
+                                font-weight: 600;
+                            }
                         }
                         &:hover {
                             cursor: pointer;

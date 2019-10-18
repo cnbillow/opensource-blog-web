@@ -119,20 +119,20 @@ const marked = require("marked")
 export default {
     head() {
         return {
-            title: `Kyeteo 个人中心${this.info.user.nickname}`,
+            title: `${this.info.user.nickname}的个人主页 -keyteo`,
             meta: [
+                {
+                    hid: "keywords",
+                    name: "keywords",
+                    content: `${this.info.user.nickname}`
+                },
                 {
                     hid: "description",
                     name: "description",
-                    content: `Kyeteo vuejs ssr 服务端渲染 esp芯片 树莓派 ${this.info.user.nickname}`
-                }
-            ],
-            script: [
-                {
-                    src: "/js/seo.js"
+                    content: `${this.info.user.saying_text}`
                 }
             ]
-        };
+        }
     },
     fetch({ $axios, store, params }) {
         return store.dispatch("page/getAuthor", { axios: $axios, params })
